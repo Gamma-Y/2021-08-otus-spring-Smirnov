@@ -2,15 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>2021-08-otus-spring-Smirnov</artifactId>
+        <groupId>ru.otus.spring.smirnov</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.otus.spring.smirnov</groupId>
-    <artifactId>2021-08-otus-spring-Smirnov</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>simple-student-testing</module>
-    </modules>
+    <artifactId>simple-student-testing</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

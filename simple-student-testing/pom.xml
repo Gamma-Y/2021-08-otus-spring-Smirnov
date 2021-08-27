@@ -5,12 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.otus.spring.smirnov</groupId>
-    <artifactId>2021-08-otus-spring-Smirnov</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>simple-student-testing</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>simple-student-testing</module>
-    </modules>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
