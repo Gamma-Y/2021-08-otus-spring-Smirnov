@@ -7,10 +7,8 @@ import ru.otus.testsStudents.entitys.Question;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class QuestionLoaderService {
     private static final String CSV_SEPARATOR = ";";
@@ -42,8 +40,9 @@ public class QuestionLoaderService {
 
     private List<String[]> fileReader(String fileName) {
         List<String[]> fileLines = null;
-        try (CSVReader reader = new CSVReader(new FileReader(getClass().getResource(fileName).getPath()))) {
+        try (CSVReader reader = new CSVReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
             fileLines = reader.readAll();
+
         } catch (IOException | CsvException e) {
             e.printStackTrace();
         }
