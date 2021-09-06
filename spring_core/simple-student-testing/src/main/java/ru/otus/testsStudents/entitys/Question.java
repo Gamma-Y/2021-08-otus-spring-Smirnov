@@ -1,8 +1,17 @@
 package ru.otus.testsStudents.entitys;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class Question {
     private final String description;
     private List<Answer> answers = new ArrayList<>();
@@ -13,25 +22,5 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         this.answers.add(answer);
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
-    }
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "description='" + description + '\'' +
-                ", answers=" + answers +
-                '}';
     }
 }

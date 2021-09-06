@@ -1,5 +1,12 @@
 package ru.otus.testsStudents.entitys;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
+@EqualsAndHashCode
 public class Answer {
     private final String description;
 
@@ -7,14 +14,5 @@ public class Answer {
         this.description = description;
     }
 
-    public String getDescription() {
-        return description;
-    }
 
-    @Override
-    public String toString() {
-        return "Answer{" +
-                "description='" + description + '\'' +
-                '}';
-    }
 }

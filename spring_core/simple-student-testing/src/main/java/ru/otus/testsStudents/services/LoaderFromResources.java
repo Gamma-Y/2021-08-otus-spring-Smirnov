@@ -2,20 +2,34 @@ package ru.otus.testsStudents.services;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import lombok.Getter;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import ru.otus.testsStudents.entitys.Answer;
 import ru.otus.testsStudents.entitys.Question;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class QuestionLoaderService {
+@Component
+@Getter
+public class LoaderFromResources implements QuestionLoader{
     private static final String CSV_SEPARATOR = ";";
-    private String questionFileName;
-    private String answerFileName;
+    private final String questionFileName;
+    private final String answerFileName;
 
-    public ArrayList<Question> createQuestions() {
+    public LoaderFromResources(@Value("${file.question}") String questionFileName, @Value("${file.answer}") String answerFileName) {
+        this.questionFileName = questionFileName;
+        this.answerFileName = answerFileName;
+    }
+
+    @Override
+    public List<Question> getQuestion() {
         List<String[]> fileLines = fileReader(questionFileName);
         Map<String, Question> questions = new HashMap<>();
         for (String[] questionWithId : fileLines) {
@@ -47,22 +61,5 @@ public class QuestionLoaderService {
             e.printStackTrace();
         }
         return fileLines;
-    }
-
-
-    public String getQuestionFileName() {
-        return questionFileName;
-    }
-
-    public void setQuestionFileName(String questionFileName) {
-        this.questionFileName = questionFileName;
-    }
-
-    public String getAnswerFileName() {
-        return answerFileName;
-    }
-
-    public void setAnswerFileName(String answerFileName) {
-        this.answerFileName = answerFileName;
     }
 }

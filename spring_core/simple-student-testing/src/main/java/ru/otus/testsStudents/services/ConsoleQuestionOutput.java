@@ -1,26 +1,16 @@
 package ru.otus.testsStudents.services;
 
+import org.springframework.stereotype.Component;
 import ru.otus.testsStudents.entitys.Answer;
 import ru.otus.testsStudents.entitys.Question;
 
 import java.util.List;
 
-public class QuestionFormatterService {
+@Component
+public class ConsoleQuestionOutput extends TextOutput {
 
-    public String questionFormat(Question question) {
-        return formatter(question);
-    }
-
-    public String questionsFormat(List<Question> questions) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Question question : questions) {
-            stringBuilder.append(questionFormat(question));
-        }
-
-        return stringBuilder.toString();
-    }
-
-    private String formatter(Question question) {
+    @Override
+    String format(Question question) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(question.getDescription()).append(":").append("\n");
         List<Answer> answers = question.getAnswers();
@@ -32,6 +22,4 @@ public class QuestionFormatterService {
 
         return stringBuilder.toString();
     }
-
-
 }
