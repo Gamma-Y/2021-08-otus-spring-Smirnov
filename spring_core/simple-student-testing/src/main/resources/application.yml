@@ -1,3 +1,11 @@
+spring:
+  messages:
+    basename: i18n/test
+
 file:
   question: question.csv
   answer: answer.csv
+
+test:
+  passed:
+    percent: 50

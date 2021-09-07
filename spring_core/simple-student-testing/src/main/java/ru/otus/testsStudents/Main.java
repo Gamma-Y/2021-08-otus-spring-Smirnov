@@ -11,5 +11,6 @@ public class Main {
         ApplicationContext context = SpringApplication.run(Main.class);
         TestService test = context.getBean(TestService.class);
         test.start();
+
     }
 }

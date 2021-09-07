@@ -47,7 +47,7 @@ public class LoaderFromResources implements QuestionLoader{
         for (String[] answerWithId : fileLines) {
             String[] parts = answerWithId[0].split(CSV_SEPARATOR);
             Question question = questionMap.get(parts[0]);
-            question.addAnswer(new Answer(parts[1]));
+            question.addAnswer(new Answer(parts[1], Boolean.parseBoolean(parts[2])));
         }
 
     }

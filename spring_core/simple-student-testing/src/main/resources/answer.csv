@@ -1,25 +1,30 @@
-1;I completely agree.
-1;Partially agree.
-1;Find difficulty in replying.
-1;Partly disagree.
-1;Completely disagree.
-2;I completely agree.
-2;Partially agree.
-2;Find difficulty in replying.
-2;Partly disagree.
-2;Completely disagree.
-3;I completely agree.
-3;Partially agree.
-3;Find difficulty in replying.
-3;Partly disagree.
-3;Completely disagree.
-4;I completely agree.
-4;Partially agree.
-4;Find difficulty in replying.
-4;Partly disagree.
-4;Completely disagree.
-5;I completely agree.
-5;Partially agree.
-5;Find difficulty in replying.
-5;Partly disagree.
-5;Completely disagree.
+1;христианство;true
+1;ислам;false
+1;иудаизм;false
+2;Москва;false
+2;Тверь;false
+2;Киев;true
+3;Смутного времени (Смуты);true
+3;Первой мировой войны;false
+3;Великой Отечественной войны;false
+4;начале ХVI веке;false
+4;середине ХVIII века;false
+4;конце ХIХ века;true
+5;Ливонского ордена;false
+5;шведов;false
+5;Золотой орды;true
+6;1853-1856 годах;false
+6;1905-1907 годах;true
+6;1918-1921 годах;false
+7;Совет Европы;false
+7;Организацию Объединенных наций (ООН);false
+7;Содружество Независимых Государств (СНГ);true
+8;А. Рублёв;true
+8;И. Глазунов;false
+8;З. Церетели;false
+9;Эрмитаж;false
+9;Третьяковская галерея;true
+9;Русский музей;false
+10;1612 году;false
+10;1703 году;false
+10;1812 году;true

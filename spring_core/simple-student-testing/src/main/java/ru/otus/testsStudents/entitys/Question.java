@@ -23,4 +23,8 @@ public class Question {
     public void addAnswer(Answer answer) {
         this.answers.add(answer);
     }
+
+    public boolean isCorrectAnswer(int i) {
+        return answers.get(i).isСorrect();
+    }
 }
