@@ -10,19 +10,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Тест форматера вопросов")
 class QuestionFormatterServiceTest {
 
-//    QuestionFormatterService service = new QuestionFormatterService();
+    TextOutput service = new ConsoleQuestionOutput();
+    @Test
+    void shouldReturnCorrectFormatterQuestionWithAnswer() {
+        String expectedFormatterQuestionWithAnswer = "Test question:\n\t 1) Test answer\n";
+        Question question = new Question("Test question");
+        Answer answer = new Answer("Test answer", true);
+        question.addAnswer(answer);
+        String actualFormatterQuestionWithAnswer = service.format(question);
 
+        assertEquals(expectedFormatterQuestionWithAnswer, actualFormatterQuestionWithAnswer);
 
-//    @Test
-//    void shouldReturnCorrectFormatterQuestionWithAnswer() {
-//        String expectedFormatterQuestionWithAnswer = "Test question:\n\t 1) Test answer\n";
-//        Question question = new Question("Test question");
-//        Answer answer = new Answer("Test answer");
-//        question.addAnswer(answer);
-//        String actualFormatterQuestionWithAnswer = service.questionFormat(question);
-//
-//        assertEquals(expectedFormatterQuestionWithAnswer, actualFormatterQuestionWithAnswer);
-//
-//    }
+    }
 
 }
