@@ -13,11 +13,11 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 public class Question {
-    private final String description;
+    private final String link;
     private List<Answer> answers = new ArrayList<>();
 
-    public Question(String description) {
-        this.description = description;
+    public Question(String link) {
+        this.link = link;
     }
 
     public void addAnswer(Answer answer) {

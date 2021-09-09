@@ -17,10 +17,10 @@ public class TestService {
     private final Reader reader;
     private final TextOutput consoleOutput;
     private final MessageSource message;
-    private final int percentCorrect;
+    private final double percentCorrect;
     private List<Question> questions = new ArrayList<>();
 
-    public TestService(QuestionLoader loader, Reader reader, TextOutput consoleOutput, MessageSource message, @Value("${test.passed.percent}") int percentCorrect) {
+    public TestService(QuestionLoader loader, Reader reader, TextOutput consoleOutput, MessageSource message, @Value("${test.passed.percent}") double percentCorrect) {
         this.loader = loader;
         this.reader = reader;
         this.consoleOutput = consoleOutput;
@@ -58,11 +58,11 @@ public class TestService {
     }
 
     private void endTest(Student student, int questionCount, int correctAnswerCount) {
-        int percent = questionCount / correctAnswerCount * 100;
+        double percent =((double) correctAnswerCount/ questionCount) * 100;
         if (percent > percentCorrect) {
-            System.out.print(message.getMessage("test.passed", new String[]{student.getName(), student.getLastName(), String.valueOf(percent), String.valueOf(percentCorrect)}, Locale.forLanguageTag("ru")));
+            System.out.print(message.getMessage("test.passed", new String[]{student.getName(), student.getLastName(), String.format("%.2f", percent), String.valueOf(percentCorrect)}, Locale.forLanguageTag("ru")));
         } else {
-            System.out.print(message.getMessage("test.failed", new String[]{student.getName(), student.getLastName(), String.valueOf(percent), String.valueOf(percentCorrect)}, Locale.forLanguageTag("ru")));
+            System.out.print(message.getMessage("test.failed", new String[]{student.getName(), student.getLastName(), String.format("%.2f", percent), String.valueOf(percentCorrect)}, Locale.forLanguageTag("ru")));
         }
     }
 

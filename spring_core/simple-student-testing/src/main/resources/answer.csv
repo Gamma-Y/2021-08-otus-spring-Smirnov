@@ -1,30 +1,18 @@
-1;христианство;true
-1;ислам;false
-1;иудаизм;false
-2;Москва;false
-2;Тверь;false
-2;Киев;true
-3;Смутного времени (Смуты);true
-3;Первой мировой войны;false
-3;Великой Отечественной войны;false
-4;начале ХVI веке;false
-4;середине ХVIII века;false
-4;конце ХIХ века;true
-5;Ливонского ордена;false
-5;шведов;false
-5;Золотой орды;true
-6;1853-1856 годах;false
-6;1905-1907 годах;true
-6;1918-1921 годах;false
-7;Совет Европы;false
-7;Организацию Объединенных наций (ООН);false
-7;Содружество Независимых Государств (СНГ);true
-8;А. Рублёв;true
-8;И. Глазунов;false
-8;З. Церетели;false
-9;Эрмитаж;false
-9;Третьяковская галерея;true
-9;Русский музей;false
-10;1612 году;false
-10;1703 году;false
-10;1812 году;true
+1;test.answer.1.1;true
+1;test.answer.1.2;false
+1;test.answer.1.3;false
+2;test.answer.2.1;false
+2;test.answer.2.2;false
+2;test.answer.2.2;true
+3;test.answer.3.1;true
+3;test.answer.3.2;false
+3;test.answer.3.3;false
+4;test.answer.4.1;false
+4;test.answer.4.2;false
+4;test.answer.4.3;true
+5;test.answer.5.1;false
+5;test.answer.5.2;false
+5;test.answer.5.3;true
+6;test.answer.6.1;false
+6;test.answer.6.2;true
+6;test.answer.6.3;false

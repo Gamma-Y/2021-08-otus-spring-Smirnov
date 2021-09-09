@@ -10,6 +10,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 @RequiredArgsConstructor
 public class Answer {
-    private final String description;
-    private final boolean isСorrect;
+    private final String link;
+    private final boolean isCorrect;
 }
