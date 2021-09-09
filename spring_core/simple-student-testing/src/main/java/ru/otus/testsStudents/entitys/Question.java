@@ -25,6 +25,6 @@ public class Question {
     }
 
     public boolean isCorrectAnswer(int i) {
-        return answers.get(i).isСorrect();
+        return answers.get(i).isCorrect();
     }
 }
