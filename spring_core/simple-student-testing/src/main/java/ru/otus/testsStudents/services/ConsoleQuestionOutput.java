@@ -15,7 +15,7 @@ public class ConsoleQuestionOutput extends TextOutput {
     private final MessageSource message;
 
     @Override
-    String format(Question question) {
+    public String format(Question question) {
         StringBuilder stringBuilder = new StringBuilder();
         String localizationQuestion = message.getMessage(question.getLink(), new String[]{}, Locale.forLanguageTag("ru"));
         stringBuilder.append(localizationQuestion).append(":").append("\n");

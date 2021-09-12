@@ -9,3 +9,7 @@ file:
 test:
   passed:
     percent: 50
+
+default:
+  country: RU
+  language: ru

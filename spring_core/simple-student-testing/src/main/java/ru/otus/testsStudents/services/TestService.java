@@ -1,7 +1,6 @@
 package ru.otus.testsStudents.services;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.testsStudents.entitys.Question;
 import ru.otus.testsStudents.entitys.Student;
@@ -9,25 +8,25 @@ import ru.otus.testsStudents.entitys.Student;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Service
-public class TestService {
+public class TestService implements StudentTest {
     private final QuestionLoader loader;
     private final Reader reader;
     private final TextOutput consoleOutput;
-    private final MessageSource message;
+    private final Localizer localizer;
     private final double percentCorrect;
     private List<Question> questions = new ArrayList<>();
 
-    public TestService(QuestionLoader loader, Reader reader, TextOutput consoleOutput, MessageSource message, @Value("${test.passed.percent}") double percentCorrect) {
+    public TestService(QuestionLoader loader, Reader reader, TextOutput consoleOutput, Localizer localizer, @Value("${test.passed.percent}") double percentCorrect) {
         this.loader = loader;
         this.reader = reader;
         this.consoleOutput = consoleOutput;
-        this.message = message;
+        this.localizer = localizer;
         this.percentCorrect = percentCorrect;
     }
 
+    @Override
     public void start() {
         int questionCount = 0;
         int correctAnswerCount = 0;
@@ -52,17 +51,17 @@ public class TestService {
     }
 
     private Student createStudent() {
-        System.out.print(message.getMessage("test.student.init", new String[]{}, Locale.forLanguageTag("ru")));
+        System.out.print(localizer.getLocalizedMessage("test.student.init", new String[]{}));
         String[] nameParts = reader.getString().split(" ");
         return new Student(nameParts[0], nameParts[1]);
     }
 
     private void endTest(Student student, int questionCount, int correctAnswerCount) {
-        double percent =((double) correctAnswerCount/ questionCount) * 100;
+        double percent = ((double) correctAnswerCount / questionCount) * 100;
         if (percent > percentCorrect) {
-            System.out.print(message.getMessage("test.passed", new String[]{student.getName(), student.getLastName(), String.format("%.2f", percent), String.valueOf(percentCorrect)}, Locale.forLanguageTag("ru")));
+            System.out.print(localizer.getLocalizedMessage("test.passed", new String[]{student.getName(), student.getLastName(), String.format("%.2f", percent), String.valueOf(percentCorrect)}));
         } else {
-            System.out.print(message.getMessage("test.failed", new String[]{student.getName(), student.getLastName(), String.format("%.2f", percent), String.valueOf(percentCorrect)}, Locale.forLanguageTag("ru")));
+            System.out.print(localizer.getLocalizedMessage("test.failed", new String[]{student.getName(), student.getLastName(), String.format("%.2f", percent), String.valueOf(percentCorrect)}));
         }
     }
 

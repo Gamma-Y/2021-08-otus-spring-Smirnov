@@ -1,16 +1,11 @@
 package ru.otus.testsStudents.services;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 import lombok.Getter;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.otus.testsStudents.entitys.Answer;
 import ru.otus.testsStudents.entitys.Question;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,19 +13,21 @@ import java.util.Map;
 
 @Component
 @Getter
-public class LoaderFromResources implements QuestionLoader{
+public class LoaderFromResources implements QuestionLoader {
     private static final String CSV_SEPARATOR = ";";
+    private final ResourceReader localResourceReader;
     private final String questionFileName;
     private final String answerFileName;
 
-    public LoaderFromResources(@Value("${file.question}") String questionFileName, @Value("${file.answer}") String answerFileName) {
+    public LoaderFromResources(@Value("${file.question}") String questionFileName, @Value("${file.answer}") String answerFileName, ResourceReader localResourceReader) {
         this.questionFileName = questionFileName;
         this.answerFileName = answerFileName;
+        this.localResourceReader = localResourceReader;
     }
 
     @Override
     public List<Question> getQuestion() {
-        List<String[]> fileLines = fileReader(questionFileName);
+        List<String[]> fileLines = localResourceReader.fileReader(questionFileName);
         Map<String, Question> questions = new HashMap<>();
         for (String[] questionWithId : fileLines) {
             String[] parts = questionWithId[0].split(CSV_SEPARATOR);
@@ -43,7 +40,7 @@ public class LoaderFromResources implements QuestionLoader{
     }
 
     private void findAnswerForQuestions(Map<String, Question> questionMap) {
-        List<String[]> fileLines = fileReader(answerFileName);
+        List<String[]> fileLines = localResourceReader.fileReader(answerFileName);
         for (String[] answerWithId : fileLines) {
             String[] parts = answerWithId[0].split(CSV_SEPARATOR);
             Question question = questionMap.get(parts[0]);
@@ -52,14 +49,5 @@ public class LoaderFromResources implements QuestionLoader{
 
     }
 
-    private List<String[]> fileReader(String fileName) {
-        List<String[]> fileLines = null;
-        try (CSVReader reader = new CSVReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(fileName)))) {
-            fileLines = reader.readAll();
 
-        } catch (IOException | CsvException e) {
-            e.printStackTrace();
-        }
-        return fileLines;
-    }
 }

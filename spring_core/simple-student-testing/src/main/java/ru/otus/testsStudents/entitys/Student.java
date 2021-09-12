@@ -10,8 +10,8 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Student {
-    private String name;
-    private String lastName;
+    private final String name;
+    private final String lastName;
     private int numberCorrectAnswers = 0;
 
     public Student(String name, String lastName) {
