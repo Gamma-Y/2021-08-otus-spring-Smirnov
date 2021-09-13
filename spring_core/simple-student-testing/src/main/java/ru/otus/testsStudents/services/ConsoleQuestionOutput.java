@@ -1,29 +1,29 @@
 package ru.otus.testsStudents.services;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.otus.testsStudents.entitys.Answer;
 import ru.otus.testsStudents.entitys.Question;
 
 import java.util.List;
-import java.util.Locale;
 
-@Component
-@RequiredArgsConstructor
+@Service
+@AllArgsConstructor
 public class ConsoleQuestionOutput extends TextOutput {
-    private final MessageSource message;
+    private final Localizer localizer;
 
     @Override
     public String format(Question question) {
         StringBuilder stringBuilder = new StringBuilder();
-        String localizationQuestion = message.getMessage(question.getLink(), new String[]{}, Locale.forLanguageTag("ru"));
+        String localizationQuestion = localizer.getLocalizedMessage(question.getLink(), new String[]{});
         stringBuilder.append(localizationQuestion).append(":").append("\n");
         List<Answer> answers = question.getAnswers();
 
         for (int i = 0; i < answers.size(); ) {
             Answer answer = answers.get(i);
-            String localizationAnswer = message.getMessage(answer.getLink(), new String[]{}, Locale.forLanguageTag("ru"));
+            String localizationAnswer = localizer.getLocalizedMessage(answer.getLink(), new String[]{});
             stringBuilder.append(String.format("\t%2d) ", ++i)).append(localizationAnswer).append("\n");
         }
 
