@@ -1,16 +1,16 @@
 package ru.otus.testsStudents;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.otus.testsStudents.services.QuestionLoaderService;
-import ru.otus.testsStudents.services.TestService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import ru.otus.testsStudents.services.StudentTest;
 
+@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
-        TestService service = context.getBean(TestService.class);
-        service.loadQuestion();
-        service.printAllQuestion();
+        ApplicationContext context = SpringApplication.run(Main.class);
+        StudentTest test = context.getBean(StudentTest.class);
+        test.start();
 
-        context.close();
     }
 }
