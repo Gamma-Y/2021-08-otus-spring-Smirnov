@@ -1,4 +1,4 @@
-package ru.otus.testsStudents.services;
+package ru.otus.testsStudents.services.resources.readers;
 
 import java.util.List;
 

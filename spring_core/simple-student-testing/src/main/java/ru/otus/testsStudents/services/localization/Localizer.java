@@ -1,4 +1,4 @@
-package ru.otus.testsStudents.services;
+package ru.otus.testsStudents.services.localization;
 
 public interface Localizer {
     String getLocalizedMessage(String messageId, String[] args);

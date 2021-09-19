@@ -1,0 +1,7 @@
+file:
+  question: questionFileTest
+  answer: answerFileTest
+
+default:
+  country: RU
+  language: ru

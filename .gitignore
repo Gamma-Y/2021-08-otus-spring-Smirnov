@@ -2,6 +2,7 @@
 /shelf/
 /workspace.xml
 
+*.log
 *.iws
 *.iml
 *.ipr

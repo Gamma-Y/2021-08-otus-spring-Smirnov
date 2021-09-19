@@ -1,10 +1,16 @@
-package ru.otus.testsStudents.services;
+package ru.otus.testsStudents.services.resources.loaders;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import ru.otus.testsStudents.entitys.Answer;
 import ru.otus.testsStudents.entitys.Question;
+import ru.otus.testsStudents.services.resources.readers.LocalResourceReader;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,14 +19,24 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Тест загрузчика вопросов")
+@SpringBootTest
+@ContextConfiguration(classes = LoaderFromResources.class)
 public class LoaderFromResourcesTest {
-    private final ResourceReader mockResourceReader = Mockito.mock(LocalResourceReader.class);
+    @MockBean
+    private LocalResourceReader mockResourceReader;
+
+    @Autowired
+    private LoaderFromResources loader;
+
+    @Value("${file.question}")
+    private String questionFileName;
+    @Value("${file.answer}")
+    private String answerFileName;
+
 
     @Test
     void shouldReturnQuestionWithAnswerFromResourcesFile() {
-        String answerFileName = "answerFileTest";
-        String questionFileName = "questionFileTest";
-        QuestionLoader loader = new LoaderFromResources(questionFileName, answerFileName, mockResourceReader);
+
         Mockito.when(mockResourceReader.fileReader(questionFileName)).thenReturn(Collections.singletonList(new String[]{"1;test"}));
         Mockito.when(mockResourceReader.fileReader(answerFileName)).thenReturn(Collections.singletonList(new String[]{"1;test;true"}));
 
