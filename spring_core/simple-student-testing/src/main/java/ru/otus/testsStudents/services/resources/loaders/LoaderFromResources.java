@@ -1,10 +1,11 @@
-package ru.otus.testsStudents.services;
+package ru.otus.testsStudents.services.resources.loaders;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.otus.testsStudents.entitys.Answer;
 import ru.otus.testsStudents.entitys.Question;
+import ru.otus.testsStudents.services.resources.readers.ResourceReader;
 
 import java.util.ArrayList;
 import java.util.HashMap;

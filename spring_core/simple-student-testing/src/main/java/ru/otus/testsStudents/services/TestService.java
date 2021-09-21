@@ -1,15 +1,20 @@
 package ru.otus.testsStudents.services;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.standard.ShellMethod;
 import ru.otus.testsStudents.entitys.Question;
 import ru.otus.testsStudents.entitys.Student;
+import ru.otus.testsStudents.services.console.TextOutput;
+import ru.otus.testsStudents.services.localization.Localizer;
+import ru.otus.testsStudents.services.resources.loaders.QuestionLoader;
+import ru.otus.testsStudents.services.console.Reader;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@ShellComponent
 public class TestService implements StudentTest {
     private final QuestionLoader loader;
     private final Reader reader;
@@ -27,6 +32,7 @@ public class TestService implements StudentTest {
     }
 
     @Override
+    @ShellMethod(key = "start-test", value = "Launches the history test")
     public void start() {
         int questionCount = 0;
         int correctAnswerCount = 0;

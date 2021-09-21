@@ -1,11 +1,10 @@
-package ru.otus.testsStudents.services;
+package ru.otus.testsStudents.services.console;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.otus.testsStudents.entitys.Answer;
 import ru.otus.testsStudents.entitys.Question;
+import ru.otus.testsStudents.services.localization.Localizer;
 
 import java.util.List;
 
