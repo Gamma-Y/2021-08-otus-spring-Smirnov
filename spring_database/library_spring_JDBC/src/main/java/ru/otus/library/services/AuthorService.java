@@ -20,4 +20,20 @@ public class AuthorService {
         return formatter.formatList(authors);
     }
 
+    @ShellMethod(key = "author", value = "get author by id")
+    public String getById(long id) {
+        return authorDao.getById(id).toString();
+    }
+
+    @ShellMethod(key = "new-author", value = "insert new author (id, name, surname, middleName)")
+    public void insert(long id, String name, String surname, String middleName) {
+        Author author = new Author(id, name, surname, middleName);
+        authorDao.insert(author);
+    }
+
+    @ShellMethod(key = "delete-author", value = "delete author by id")
+    public void delete(long id) {
+        authorDao.deleteById(id);
+    }
+
 }

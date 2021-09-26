@@ -9,7 +9,7 @@ public interface BookDao {
 
     Book getById(long id);
 
-    void update(Book book);
+    void insert(Book book);
 
     void deleteById(long id);
 }

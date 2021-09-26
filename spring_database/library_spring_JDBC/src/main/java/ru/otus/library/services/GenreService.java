@@ -19,4 +19,20 @@ public class GenreService {
         List<Genre> generis = genreDao.getAll();
         return formatter.formatList(generis);
     }
+
+    @ShellMethod(key = "genre", value = "get genre by id")
+    public String getById(long id) {
+        return genreDao.getById(id).toString();
+    }
+
+    @ShellMethod(key = "new-genre", value = "insert new book (id, name)")
+    public void insert(long id, String name) {
+        Genre genre = new Genre(id, name);
+        genreDao.insert(genre);
+    }
+
+    @ShellMethod(key = "delete-genre", value = "delete genre by id")
+    public void delete(long id) {
+        genreDao.deleteById(id);
+    }
 }

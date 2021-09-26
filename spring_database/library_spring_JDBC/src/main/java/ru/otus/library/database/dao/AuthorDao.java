@@ -9,7 +9,7 @@ public interface AuthorDao {
 
     Author getById(long id);
 
-    void update(Author author);
+    void insert(Author author);
 
     void deleteById(long id);
 }
