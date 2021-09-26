@@ -14,6 +14,6 @@ public class AuthorMapper implements RowMapper<Author> {
         String name = rs.getString("name");
         String surname = rs.getString("surname");
         String middleName = rs.getString("middleName");
-        return new Author(1, name, surname, middleName);
+        return new Author(id, name, surname, middleName);
     }
 }
