@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
+import ru.otus.library.database.entities.Author;
 import ru.otus.library.database.entities.Book;
+import ru.otus.library.database.entities.Genre;
 
 import java.util.List;
 
@@ -21,8 +23,8 @@ public class BookDaoImplTest {
     private static final int EXPECTED_BOOK_COUNT = 1;
     private static final int EXISTING_BOOK_ID = 1;
     private static final String EXISTING_BOOK_NAME = "name";
-    private static final int EXISTING_BOOK_GENREID = 1;
-    private static final int EXISTING_BOOK_AUTHORID = 1;
+    private static final Genre EXISTING_BOOK_GENRE = new Genre(1, "name");
+    private static final Author EXISTING_BOOK_AUTHOR = new Author(1, "name", "surname", "middlename");
 
 
     @Autowired
@@ -45,7 +47,7 @@ public class BookDaoImplTest {
     @DisplayName("возвращать ожидаемую книгу по его id")
     @Test
     void shouldReturnExpectedBookById() {
-        Book expected = new Book(EXISTING_BOOK_ID, EXISTING_BOOK_NAME, EXISTING_BOOK_GENREID, EXISTING_BOOK_AUTHORID);
+        Book expected = new Book(EXISTING_BOOK_ID, EXISTING_BOOK_NAME, EXISTING_BOOK_AUTHOR, EXISTING_BOOK_GENRE);
         Book actual = dao.getById(expected.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -53,7 +55,7 @@ public class BookDaoImplTest {
     @DisplayName("добавлять книгу в БД")
     @Test
     void shouldInsertBook() {
-        Book expected = new Book(2, EXISTING_BOOK_NAME, EXISTING_BOOK_GENREID, EXISTING_BOOK_AUTHORID);
+        Book expected = new Book(2, EXISTING_BOOK_NAME, EXISTING_BOOK_AUTHOR, EXISTING_BOOK_GENRE);
         dao.insert(expected);
         Book actual = dao.getById(expected.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);

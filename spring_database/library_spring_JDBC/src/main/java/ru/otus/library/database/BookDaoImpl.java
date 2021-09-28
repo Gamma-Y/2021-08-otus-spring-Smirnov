@@ -18,19 +18,27 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select id, name, genre_id, author_id from books", new BookMapper());
+        return jdbc.query("select books.id, books.name, books.genre_id, books.author_id, " +
+                        "authors.name, authors.surname, authors.middlename, " +
+                        "generis.name " +
+                        "from books left join authors on books.author_id = authors.id left join generis on books.genre_id = generis.id",
+                new BookMapper());
     }
 
     @Override
     public Book getById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
-        return jdbc.queryForObject("select id, name, genre_id, author_id from books where id=:id", params, new BookMapper());
+        return jdbc.queryForObject("select books.id, books.name, books.genre_id, books.author_id, " +
+                "authors.name, authors.surname, authors.middlename, " +
+                "generis.name " +
+                "from books left join authors on books.author_id = authors.id left join generis on books.genre_id = generis.id " +
+                "where books.id=:id", params, new BookMapper());
     }
 
     @Override
     public void insert(Book book) {
         jdbc.update("insert into books (id, `name`, `genre_id`, `author_id`) values (:id, :name, :genre_id, :author_id)",
-                Map.of("id", book.getId(), "name", book.getName(), "genre_id", book.getGenreId(), "author_id", book.getAuthorId()));
+                Map.of("id", book.getId(), "name", book.getName(), "genre_id", book.getGenre().getId(), "author_id", book.getAuthor().getId()));
     }
 
     @Override

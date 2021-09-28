@@ -17,12 +17,12 @@ public class AuthorService {
     @ShellMethod(key = "authors", value = "get all authors")
     public String getAll() {
         List<Author> authors = authorDao.getAll();
-        return formatter.formatList(authors);
+        return formatter.formatListShortInfo(authors);
     }
 
     @ShellMethod(key = "author", value = "get author by id")
     public String getById(long id) {
-        return authorDao.getById(id).toString();
+        return authorDao.getById(id).getShortInfo();
     }
 
     @ShellMethod(key = "new-author", value = "insert new author (id, name, surname, middleName)")

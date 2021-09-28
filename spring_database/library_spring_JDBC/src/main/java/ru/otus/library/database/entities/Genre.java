@@ -1,16 +1,22 @@
 package ru.otus.library.database.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import ru.otus.library.services.Formatter;
 
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
-public class Genre {
+public class Genre implements Formatter {
     private long id;
     private String name;
 
+    @Override
+    public String getFullInfo() {
+        return toString();
+    }
+
+    @Override
+    public String getShortInfo() {
+        return name;
+    }
 }

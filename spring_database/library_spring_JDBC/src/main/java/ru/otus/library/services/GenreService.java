@@ -17,12 +17,12 @@ public class GenreService {
     @ShellMethod(key = "generis", value = "get all generis")
     public String getAll() {
         List<Genre> generis = genreDao.getAll();
-        return formatter.formatList(generis);
+        return formatter.formatListFullInfo(generis);
     }
 
     @ShellMethod(key = "genre", value = "get genre by id")
     public String getById(long id) {
-        return genreDao.getById(id).toString();
+        return genreDao.getById(id).getShortInfo();
     }
 
     @ShellMethod(key = "new-genre", value = "insert new book (id, name)")

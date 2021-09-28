@@ -1,14 +1,30 @@
 package ru.otus.library.database.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import ru.otus.library.services.Formatter;
 
-@Getter
-@Setter
-@ToString
+import java.util.StringJoiner;
+
+@Data
 @AllArgsConstructor
-public class Book {
+public class Book implements Formatter {
     private long id;
     private String name;
-    private long genreId;
-    private long authorId;
+    private Author author;
+    private Genre genre;
+
+    @Override
+    public String getFullInfo() {
+        return toString();
+    }
+
+    @Override
+    public String getShortInfo() {
+        StringJoiner joiner = new StringJoiner(" ");
+        joiner.add(name);
+        joiner.add("Автор:" + author.getShortInfo());
+        joiner.add("Жанр:" + genre.getShortInfo());
+        return joiner.toString();
+    }
 }

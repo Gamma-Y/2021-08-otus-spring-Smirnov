@@ -2,7 +2,7 @@ insert into generis (id, `name`) values (1, 'Программирование');
 insert into generis (id, `name`) values (2, 'Финансы');
 
 
-insert into authors (id, `name`, `surname`, `middlename`) values (1, 'Кэтти,', 'Сьерра', '');
+insert into authors (id, `name`, `surname`, `middlename`) values (1, 'Кэтти', 'Сьерра', '');
 insert into authors (id, `name`, `surname`, `middlename`) values (2, 'Роберт', 'Мартин', 'Сесил ');
 insert into authors (id, `name`, `surname`, `middlename`) values (3, 'Клейсон', 'Джорж', 'Самюэль');
 
