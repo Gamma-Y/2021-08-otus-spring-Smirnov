@@ -68,7 +68,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.testsStudents.Main</mainClass>
+                            <mainClass>ru.otus.testsStudents.ru.otus.library.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
