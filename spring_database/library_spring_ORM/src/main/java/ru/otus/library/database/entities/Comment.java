@@ -7,23 +7,23 @@ import ru.otus.library.services.Formatter;
 import javax.persistence.*;
 
 @Data
-@Table(name = "generis")
+@Table(name = "comments")
 @Entity
 @AllArgsConstructor
-public class Genre implements Formatter {
+public class Comment implements Formatter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "title", nullable = false, unique = true)
-    private String name;
+    @Column(name = "text")
+    private String text;
 
     @Override
     public String getFullInfo() {
-        return toString();
+        return null;
     }
 
     @Override
     public String getShortInfo() {
-        return name;
+        return null;
     }
 }

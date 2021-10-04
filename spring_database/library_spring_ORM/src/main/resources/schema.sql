@@ -1,12 +1,44 @@
 DROP TABLE IF EXISTS AUTHORS;
 DROP TABLE IF EXISTS BOOKS;
 DROP TABLE IF EXISTS GENERIS;
+DROP TABLE IF EXISTS COMMENTS;
 
 
-CREATE TABLE GENERIS(ID BIGINT PRIMARY KEY, NAME VARCHAR(255));
-CREATE TABLE AUTHORS(ID BIGINT PRIMARY KEY, NAME VARCHAR(255), SURNAME VARCHAR(255), MIDDLENAME VARCHAR(255));
-CREATE TABLE BOOKS(ID BIGINT PRIMARY KEY, NAME VARCHAR(255),  GENRE_ID BIGINT, AUTHOR_ID BIGINT);
+create table books(
+    id bigserial,
+    name varchar(255),
+    primary key (id)
+);
 
+create table comments(
+    id bigserial,
+    text varchar(1000),
+    book_id bigint references books(id) on delete cascade,
+    primary key (id)
+);
 
-ALTER TABLE BOOKS ADD FOREIGN KEY (GENRE_ID) REFERENCES GENERIS(ID);
-ALTER TABLE BOOKS ADD FOREIGN KEY (AUTHOR_ID) REFERENCES AUTHORS(ID);
+create table authors(
+    id bigserial,
+    name varchar(255),
+    surname varchar(255),
+    middle_name varchar(255),
+    primary key (id)
+);
+
+create table generis(
+    id bigserial,
+    title varchar(255),
+    primary key (id)
+);
+
+create table books_authors(
+    book_id bigint references books (id) on delete cascade,
+    author_id bigint references authors(id),
+    primary key (book_id, author_id)
+);
+
+create table books_generis(
+    book_id bigint references books (id) on delete cascade,
+    genre_id bigint references generis(id),
+    primary key (book_id, genre_id)
+);
