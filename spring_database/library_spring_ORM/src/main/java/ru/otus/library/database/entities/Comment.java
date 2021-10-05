@@ -2,6 +2,7 @@ package ru.otus.library.database.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.otus.library.services.Formatter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Data
 @Table(name = "comments")
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
 public class Comment implements Formatter {
     @Id
@@ -28,6 +30,7 @@ public class Comment implements Formatter {
 
     @Override
     public String getShortInfo() {
-        return null;
+
+        return text;
     }
 }

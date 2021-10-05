@@ -8,6 +8,7 @@ import ru.otus.library.database.repositories.CommentRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,28 +21,40 @@ public class CommentRepositoryJPA implements CommentRepository {
 
     @Override
     public Comment save(Comment comment) {
-        return null;
+        if (comment.getId() >= 0) {
+            em.persist(comment);
+            return comment;
+        } else {
+            return em.merge(comment);
+        }
     }
 
     @Override
     public Optional<Comment> findById(long id) {
-        return Optional.empty();
+        return Optional.ofNullable(em.find(Comment.class, id));
     }
 
     @Override
     public List<Comment> findAll() {
-        return null;
+        TypedQuery<Comment> query = em.createQuery("select c from Comment c", Comment.class);
+        return query.getResultList();
     }
 
     @Override
-    public void updateId(Comment comment) {
-
+    public void updateTextById(long id, String text, long dateTime) {
+        Query query = em.createQuery("update Comment c " +
+                "set c.text=:text, c.dateTime=:dateTime " +
+                "where c.id=:id");
+        query.setParameter("text", text);
+        query.setParameter("dataTime", dateTime);
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 
     @Override
     public void deleteById(long id) {
         Query query = em.createQuery("delete " +
-                "from comments c " +
+                "from Comment c " +
                 "where c.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();

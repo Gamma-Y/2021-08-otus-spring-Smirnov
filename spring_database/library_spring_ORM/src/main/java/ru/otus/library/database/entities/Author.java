@@ -2,6 +2,7 @@ package ru.otus.library.database.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.otus.library.services.Formatter;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.StringJoiner;
 @Data
 @Table(name = "authors")
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
 public class Author implements Formatter {
     @Id

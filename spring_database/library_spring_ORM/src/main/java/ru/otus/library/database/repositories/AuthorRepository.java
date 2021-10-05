@@ -12,7 +12,7 @@ public interface AuthorRepository {
 
     List<Author> findAll();
 
-    void updateId(Author author);
+    void updateNameById(long id, String name);
 
     void deleteById(long id);
 }
