@@ -14,8 +14,12 @@ public class Comment implements Formatter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "text")
     private String text;
+
+    @Column(name = "date_time")
+    private long dateTime;
 
     @Override
     public String getFullInfo() {

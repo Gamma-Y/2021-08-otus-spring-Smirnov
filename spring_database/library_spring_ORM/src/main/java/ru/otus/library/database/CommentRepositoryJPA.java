@@ -2,8 +2,8 @@ package ru.otus.library.database;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.otus.library.database.entities.Genre;
-import ru.otus.library.database.repositories.GenreRepository;
+import ru.otus.library.database.entities.Comment;
+import ru.otus.library.database.repositories.CommentRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,44 +11,38 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
-
 @Repository
 @AllArgsConstructor
-public class GenreRepositoryJPA implements GenreRepository {
+public class CommentRepositoryJPA implements CommentRepository {
 
     @PersistenceContext
     private final EntityManager em;
 
     @Override
-    public Genre save(Genre genre) {
-        if (genre.getId() <= 0) {
-            em.persist(genre);
-            return genre;
-        } else {
-            return em.merge(genre);
-        }
-    }
-
-    @Override
-    public Optional<Genre> findById(long id) {
-        return Optional.ofNullable(em.find(Genre.class, id));
-    }
-
-    @Override
-    public List<Genre> findAll() {
+    public Comment save(Comment comment) {
         return null;
     }
 
     @Override
-    public void updateNameById(long id, String title) {
+    public Optional<Comment> findById(long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Comment> findAll() {
+        return null;
+    }
+
+    @Override
+    public void updateId(Comment comment) {
 
     }
 
     @Override
     public void deleteById(long id) {
         Query query = em.createQuery("delete " +
-                "from generis g " +
-                "where g.id = :id");
+                "from comments c " +
+                "where c.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
     }
