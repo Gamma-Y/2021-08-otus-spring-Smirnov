@@ -43,7 +43,7 @@ public class CommentService {
 
     @Transactional
     @ShellMethod(key = "save comment", value = "save comment (text, dateTime)")
-    public void save(String text, long dateTime, long id) {
-        System.out.println(repository.save(new Comment(id, text, dateTime)).getFullInfo());
+    public void save(String text, long dateTime) {
+        System.out.println(repository.save(new Comment(text, dateTime)).getFullInfo());
     }
 }

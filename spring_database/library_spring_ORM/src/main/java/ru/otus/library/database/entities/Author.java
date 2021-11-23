@@ -1,29 +1,40 @@
 package ru.otus.library.database.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.otus.library.services.Formatter;
 
 import javax.persistence.*;
-import java.util.StringJoiner;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Table(name = "authors")
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class Author implements Formatter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "name", nullable = false)
-    private String name;
-    @Column(name = "surname", nullable = false)
-    private String surname;
-    @Column(name = "middle_name")
-    private String middleName;
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
 
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
+    private List<Book> books = new ArrayList<>();
+
+    public Author(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void addBook(Book b) {
+        this.books.add(b);
+        b.getAuthors().add(this);
+    }
+
+    public void removeBook(Book b) {
+        this.books.remove(b);
+        b.getAuthors().remove(this);
+    }
     @Override
     public String getFullInfo() {
         return toString();
@@ -31,12 +42,7 @@ public class Author implements Formatter {
 
     @Override
     public String getShortInfo() {
-        StringJoiner joiner = new StringJoiner(" ");
-        String shortMiddleName = middleName.length() != 0 ? middleName.charAt(0) + "." : "";
-        joiner.add(name);
-        joiner.add(surname);
-        joiner.add(shortMiddleName);
-        return joiner.toString();
+        return fullName;
     }
 
 }

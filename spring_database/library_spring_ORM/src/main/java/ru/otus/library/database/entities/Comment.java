@@ -23,6 +23,15 @@ public class Comment implements Formatter {
     @Column(name = "date_time")
     private long dateTime;
 
+    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="book_id", nullable = false)
+    private Book book;
+
+    public Comment(String text, long dateTime) {
+        this.text = text;
+        this.dateTime = dateTime;
+    }
+
     @Override
     public String getFullInfo() {
         return null;

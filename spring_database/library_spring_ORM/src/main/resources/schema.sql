@@ -20,9 +20,7 @@ create table comments(
 
 create table authors(
     id bigserial,
-    name varchar(255),
-    surname varchar(255),
-    middle_name varchar(255),
+    full_name varchar(511),
     primary key (id)
 );
 

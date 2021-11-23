@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.library.database.entities.Book;
 import ru.otus.library.database.entities.Genre;
 import ru.otus.library.database.repositories.GenreRepository;
 
@@ -30,6 +31,15 @@ public class GenreService {
         System.out.println(genre.getShortInfo());
     }
 
+    @Transactional(readOnly = true)
+    @ShellMethod(key = "genre book", value = "get all books by genre id")
+    public void getAllBookByGenreId(long id) {
+        Genre genre = repository.findById(id).get();
+        List<Book> books = genre.getBooks();
+        for(Book b :books){
+            System.out.println(b.getShortInfo());
+        }
+    }
     @Transactional
     @ShellMethod(key = "delete genre", value = "delete genre by id")
     public void deleteById(long id) {
@@ -44,8 +54,8 @@ public class GenreService {
 
     @Transactional
     @ShellMethod(key = "save genre", value = "save genre (id, title)")
-    public void save(String title, long id) {
-        System.out.println(repository.save(new Genre(id, title)).getFullInfo());
+    public void save(String title) {
+        System.out.println(repository.save(new Genre(title)).getFullInfo());
     }
 
 

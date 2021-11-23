@@ -2,6 +2,7 @@ package ru.otus.library.database;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.otus.library.database.entities.Author;
 import ru.otus.library.database.entities.Genre;
 import ru.otus.library.database.repositories.GenreRepository;
 
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +35,13 @@ public class GenreRepositoryJPA implements GenreRepository {
     @Override
     public Optional<Genre> findById(long id) {
         return Optional.ofNullable(em.find(Genre.class, id));
+    }
+
+    @Override
+    public List<Genre> findById(List<Long> id)  {
+        Query query = em.createQuery("select g from Genre g where g.id in (:ids)");
+        query.setParameter("ids", id);
+        return query.getResultList();
     }
 
     @Override

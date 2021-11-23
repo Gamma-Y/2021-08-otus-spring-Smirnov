@@ -5,9 +5,13 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.library.database.entities.Author;
+import ru.otus.library.database.entities.Book;
 import ru.otus.library.database.repositories.AuthorRepository;
 
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @ShellComponent
 @AllArgsConstructor
@@ -29,6 +33,16 @@ public class AuthorService {
         System.out.println(author.getShortInfo());
     }
 
+    @Transactional(readOnly = true)
+    @ShellMethod(key = "author book", value = "get all books by author id")
+    public void getAuthorBookById(long id) {
+        Author authors = repository.findById(id).get();
+        List<Book> books = authors.getBooks();
+        for(Book b :books){
+            System.out.println(b.getShortInfo());
+        }
+    }
+
     @Transactional
     @ShellMethod(key = "delete author", value = "delete author by id")
     public void deleteById(long id) {
@@ -42,8 +56,11 @@ public class AuthorService {
     }
 
     @Transactional
-    @ShellMethod(key = "save author", value = "save author (id, name, surname, middle name)")
-    public void save(String name, String surname, String middleName, long id) {
-        System.out.println(repository.save(new Author(id, name, surname, middleName)).getFullInfo());
+    @ShellMethod(key = "add author", value = "save author (id, name, surname, middle name)")
+    public void save(String name) {
+        System.out.println(repository.save(new Author(name)).getFullInfo());
     }
+
+
+
 }

@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,14 @@ public class AuthorRepositoryJPA implements AuthorRepository {
     public Optional<Author> findById(long id) {
         return Optional.ofNullable(em.find(Author.class, id));
     }
+
+    @Override
+    public List<Author> findById(List<Long> id) {
+        Query query = em.createQuery("select a from Author a where a.id in (:ids)");
+        query.setParameter("ids", id);
+        return query.getResultList();
+    }
+
 
     @Override
     public List<Author> findAll() {

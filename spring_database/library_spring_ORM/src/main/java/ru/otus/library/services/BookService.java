@@ -6,6 +6,7 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.library.database.entities.Author;
 import ru.otus.library.database.entities.Book;
+import ru.otus.library.database.entities.Genre;
 import ru.otus.library.database.repositories.AuthorRepository;
 import ru.otus.library.database.repositories.BookRepository;
 import ru.otus.library.database.repositories.CommentRepository;
@@ -33,7 +34,7 @@ public class BookService {
     @ShellMethod(key = "book", value = "get book by id")
     public void getById(long id) {
         Book book = repository.findById(id).get();
-        System.out.println(book.getShortInfo());
+        System.out.println(book.getFullInfo());
     }
 
     @Transactional
@@ -48,10 +49,12 @@ public class BookService {
         repository.updateNameById(id, name);
     }
 
-//    @Transactional
-//    @ShellMethod(key = "save author", value = "save author (id, name, surname, middle name)")
-//    public void save(String name, long[] generisId, long[] authorsId, long[] commentsId, long id) {
-//
-////        System.out.println(repository.save(new Book(id, name)).getFullInfo());
-//    }
+    @Transactional
+    @ShellMethod(key = "add book", value = "add book(book name, generis Ids, authors Ids)")
+    public void save(String name, Long[] generisId, Long[] authorsId) {
+        List<Genre> generis = genreRepository.findById(List.of(generisId));
+        List<Author> authors = authorRepository.findById(List.of(authorsId));
+        Book book = new Book(name,authors,generis);
+        repository.save(book);
+    }
 }
