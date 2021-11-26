@@ -27,7 +27,7 @@ public class Comment implements Formatter {
     @JoinColumn(name="book_id", nullable = false)
     private Book book;
 
-    public Comment(String text, long dateTime) {
+    public Comment(String text, long dateTime, Book book) {
         this.text = text;
         this.dateTime = dateTime;
     }

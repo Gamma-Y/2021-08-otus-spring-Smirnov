@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.library.database.entities.Book;
 import ru.otus.library.database.entities.Comment;
+import ru.otus.library.database.repositories.BookRepository;
 import ru.otus.library.database.repositories.CommentRepository;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CommentService {
     private final CommentRepository repository;
+    private final BookRepository bookRepository;
     private final FormatterService formatter;
 
     @Transactional(readOnly = true)
@@ -42,8 +45,9 @@ public class CommentService {
     }
 
     @Transactional
-    @ShellMethod(key = "save comment", value = "save comment (text, dateTime)")
-    public void save(String text, long dateTime) {
-        System.out.println(repository.save(new Comment(text, dateTime)).getFullInfo());
+    @ShellMethod(key = "save comment", value = "save comment (text, dateTime, bookId)")
+    public void save(String text, long dateTime, long bookId) {
+        Book book = bookRepository.findById(bookId).get();
+        System.out.println(repository.save(new Comment(text, dateTime, book)).getFullInfo());
     }
 }

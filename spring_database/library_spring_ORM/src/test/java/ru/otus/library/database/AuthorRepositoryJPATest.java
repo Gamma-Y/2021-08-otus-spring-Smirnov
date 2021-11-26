@@ -8,6 +8,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.library.database.entities.Author;
+import ru.otus.library.database.entities.Genre;
+
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -15,7 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DataJpaTest
 @Import(AuthorRepositoryJPA.class)
 public class AuthorRepositoryJPATest {
+    private static final int EXPECTED_NUMBER_OF_AUTHORS = 2;
     private static final long AUTHOR_ID = 1;
+    private static final String AUTHOR_FULL_NAME = "test";
     @Autowired
     private AuthorRepositoryJPA repository;
     @Autowired
@@ -27,7 +36,40 @@ public class AuthorRepositoryJPATest {
         Author actual = repository.findById(AUTHOR_ID).get();
         Author expected = em.find(Author.class, AUTHOR_ID);
         assertEquals(expected, actual);
-//        assertThat(actual).isPresent().get()
-//                .usingRecursiveComparison().isEqualTo(expected);
+    }
+
+    @DisplayName("должен найти всех авторов")
+    @Test
+    public void shouldFindAllExpectedAuthor() {
+       List<Author> actual = repository.findAll();
+       assertThat(actual).isNotNull().hasSize(EXPECTED_NUMBER_OF_AUTHORS);
+    }
+
+    @DisplayName("должен сохранить нового автора")
+    @Test
+    public void shouldSaveNewAuthor() {
+        Author author = new Author(AUTHOR_FULL_NAME);
+        repository.save(author);
+        Author actual = em.find(Author.class, 3l);
+        assertThat(actual.getFullName()).isNotNull().isEqualTo(AUTHOR_FULL_NAME);
+    }
+
+    @DisplayName("должен удалить автора")
+    @Test
+    public void shouldRemoveAuthor() {
+        Author author = new Author(AUTHOR_FULL_NAME);
+        author = em.persist(author);
+        repository.deleteById(author.getId());
+        em.flush();
+        List<Author> actual = em.getEntityManager().createQuery("select a from Author a", Author.class).getResultList();
+        assertThat(actual).isNotNull().hasSize(2);
+    }
+
+    @DisplayName("должен найти авторов по списку id")
+    @Test
+    public void shouldFindAuthorsByIDsList() {
+        List<Long> ids = new ArrayList<>(){{add(1l); add(2l);}};
+        List<Author> actual = repository.findById(ids);
+        assertThat(actual).isNotNull().hasSize(2);
     }
 }
