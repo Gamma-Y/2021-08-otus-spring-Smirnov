@@ -8,8 +8,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.library.database.entities.Author;
-import ru.otus.library.database.entities.Genre;
 
+
+import javax.persistence.Query;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,17 +60,16 @@ public class AuthorRepositoryJPATest {
     public void shouldRemoveAuthor() {
         Author author = new Author(AUTHOR_FULL_NAME);
         author = em.persist(author);
-        repository.deleteById(author.getId());
-        em.flush();
-        List<Author> actual = em.getEntityManager().createQuery("select a from Author a", Author.class).getResultList();
-        assertThat(actual).isNotNull().hasSize(2);
+        repository.delete(author);
+        Author actual = em.find(Author.class, author.getId());
+        assertThat(actual).isEqualTo(null);
     }
 
     @DisplayName("должен найти авторов по списку id")
     @Test
     public void shouldFindAuthorsByIDsList() {
         List<Long> ids = new ArrayList<>(){{add(1l); add(2l);}};
-        List<Author> actual = repository.findById(ids);
+        List<Author> actual = repository.findByIds(ids);
         assertThat(actual).isNotNull().hasSize(2);
     }
 }

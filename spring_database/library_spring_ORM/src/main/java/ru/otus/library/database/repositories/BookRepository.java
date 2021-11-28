@@ -12,7 +12,7 @@ public interface BookRepository {
 
     List<Book> findAll();
 
-    void updateNameById(long id, String name);
+    void update(Book updatedBook);
 
-    void deleteById(long id);
+    void delete(Book book);
 }

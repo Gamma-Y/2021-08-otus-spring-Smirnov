@@ -8,57 +8,59 @@ import ru.otus.library.database.entities.Author;
 import ru.otus.library.database.entities.Book;
 import ru.otus.library.database.repositories.AuthorRepository;
 
-import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @ShellComponent
 @AllArgsConstructor
 public class AuthorService {
     private final AuthorRepository repository;
-    private final FormatterService formatter;
 
-    @Transactional(readOnly = true)
     @ShellMethod(key = "authors", value = "get all authors")
-    public void getAll() {
-        List<Author> generis = repository.findAll();
-        System.out.println(formatter.formatListShortInfo(generis));
+    public List<Author>  getAll() {
+        List<Author> authors = repository.findAll();
+        return authors ;
     }
 
-    @Transactional(readOnly = true)
+
     @ShellMethod(key = "author", value = "get author by id")
-    public void getById(long id) {
+    public Author getById(long id) {
         Author author = repository.findById(id).get();
-        System.out.println(author.getShortInfo());
+        return  author;
     }
 
     @Transactional(readOnly = true)
     @ShellMethod(key = "author book", value = "get all books by author id")
-    public void getAuthorBookById(long id) {
-        Author authors = repository.findById(id).get();
-        List<Book> books = authors.getBooks();
+    public  void getAuthorBooksById(long id) {
+        Author author = repository.findById(id).get();
+        List<Book> books = author.getBooks();
+        System.out.println(author);
         for(Book b :books){
-            System.out.println(b.getShortInfo());
+            System.out.println(b);
         }
     }
 
     @Transactional
     @ShellMethod(key = "delete author", value = "delete author by id")
-    public void deleteById(long id) {
-        repository.deleteById(id);
+    public String deleteById(long id) {
+        Author author = repository.findById(id).get();
+        repository.delete(author);
+        return author + " deleted";
     }
 
     @Transactional
     @ShellMethod(key = "author update", value = "update author name (name) by id")
-    public void update(String name, long id) {
-        repository.updateNameById(id, name);
+    public String update(String name, long id) {
+        Author author = repository.findById(id).get();
+        author.setFullName(name);
+        repository.update(author);
+        return author + " update";
     }
 
     @Transactional
     @ShellMethod(key = "add author", value = "save author (id, name, surname, middle name)")
-    public void save(String name) {
-        System.out.println(repository.save(new Author(name)).getFullInfo());
+    public String save(String name) {
+        repository.save(new Author(name));
+        return "OK";
     }
 
 

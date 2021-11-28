@@ -55,18 +55,17 @@ public class GenreRepositoryJPATest {
     @Test
     public void shouldRemoveGenre() {
         Genre genre = new Genre(GENRE_TITLE);
-        genre = em.persist(genre);
-        repository.deleteById(genre.getId());
-        em.flush();
-        List<Genre> actual = em.getEntityManager().createQuery("select g from Genre g", Genre.class).getResultList();
-        assertThat(actual).isNotNull().hasSize(1);
+        genre = em.persistAndFlush(genre);
+        repository.delete(genre);
+        Genre actual = em.find(Genre.class, genre.getId());
+        assertThat(actual).isEqualTo(null);
     }
 
     @DisplayName("должен найти жанры по списку id")
     @Test
     public void shouldFindGenresByIDsList() {
         List<Long> ids = new ArrayList<>(){{add(1l); add(2l);}};
-        List<Genre> actual = repository.findById(ids);
+        List<Genre> actual = repository.findByIds(ids);
         assertThat(actual).isNotNull().hasSize(1);
     }
 

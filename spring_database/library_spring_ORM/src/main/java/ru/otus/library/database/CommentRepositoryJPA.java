@@ -41,22 +41,13 @@ public class CommentRepositoryJPA implements CommentRepository {
     }
 
     @Override
-    public void updateTextById(long id, String text, long dateTime) {
-        Query query = em.createQuery("update Comment c " +
-                "set c.text=:text, c.dateTime=:dateTime " +
-                "where c.id=:id");
-        query.setParameter("text", text);
-        query.setParameter("dataTime", dateTime);
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void update(Comment updatedComment) {
+        this.save(updatedComment);
     }
 
+
     @Override
-    public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from Comment c " +
-                "where c.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void delete(Comment comment) {
+        em.remove(comment);
     }
 }

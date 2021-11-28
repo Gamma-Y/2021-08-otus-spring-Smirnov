@@ -12,7 +12,7 @@ public interface CommentRepository {
 
     List<Comment> findAll();
 
-    void updateTextById(long id, String text, long dateTime);
+    void update(Comment updatedComment);
 
-    void deleteById(long id);
+    void delete(Comment comment);
 }

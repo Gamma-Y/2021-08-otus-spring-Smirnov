@@ -16,38 +16,41 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository repository;
     private final BookRepository bookRepository;
-    private final FormatterService formatter;
 
-    @Transactional(readOnly = true)
     @ShellMethod(key = "comments", value = "get all comments")
-    public void getAll() {
-        List<Comment> generis = repository.findAll();
-        System.out.println(formatter.formatListShortInfo(generis));
+    public List<Comment> getAll() {
+        List<Comment> comments = repository.findAll();
+        return comments;
     }
 
-    @Transactional(readOnly = true)
     @ShellMethod(key = "comment", value = "get comment by id")
-    public void getById(long id) {
+    public Comment getById(long id) {
         Comment comment = repository.findById(id).get();
-        System.out.println(comment.getShortInfo());
+        return comment;
     }
 
     @Transactional
     @ShellMethod(key = "delete comment", value = "delete comment by id")
-    public void deleteById(long id) {
-        repository.deleteById(id);
+    public String deleteById(long id) {
+        Comment comment = repository.findById(id).get();
+        repository.delete(comment);
+        return comment + " deleted";
     }
 
     @Transactional
     @ShellMethod(key = "comment update", value = "update comment (text, dateTime) by id")
-    public void update(String text, long id) {
-        repository.updateTextById(id, text, System.currentTimeMillis());
+    public String update(String text, long id) {
+        Comment comment = repository.findById(id).get();
+        comment.setText(text);
+        repository.update(comment);
+        return comment + " update";
     }
 
     @Transactional
-    @ShellMethod(key = "save comment", value = "save comment (text, dateTime, bookId)")
-    public void save(String text, long dateTime, long bookId) {
+    @ShellMethod(key = "save comment", value = "save comment (text, bookId)")
+    public String save(String text, long bookId) {
         Book book = bookRepository.findById(bookId).get();
-        System.out.println(repository.save(new Comment(text, dateTime, book)).getFullInfo());
+        repository.save(new Comment(text, System.currentTimeMillis(), book));
+        return "OK";
     }
 }

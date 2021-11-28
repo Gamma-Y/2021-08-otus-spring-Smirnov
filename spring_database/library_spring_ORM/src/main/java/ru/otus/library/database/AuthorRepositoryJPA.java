@@ -34,7 +34,7 @@ public class AuthorRepositoryJPA implements AuthorRepository {
     }
 
     @Override
-    public List<Author> findById(List<Long> id) {
+    public List<Author> findByIds(List<Long> id) {
         Query query = em.createQuery("select a from Author a where a.id in (:ids)");
         query.setParameter("ids", id);
         return query.getResultList();
@@ -48,22 +48,13 @@ public class AuthorRepositoryJPA implements AuthorRepository {
     }
 
     @Override
-    public void updateNameById(long id, String name) {
-        Query query = em.createQuery("update Author a " +
-                "set a.name=:name" +
-                "where a.id=:id");
-        query.setParameter("name", name);
-        query.setParameter("id", id);
-        query.executeUpdate();
-
+    public void update(Author updatedAuthor) {
+        this.save(updatedAuthor);
     }
 
+
     @Override
-    public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from Author a " +
-                "where id=:id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void delete(Author author) {
+        em.remove(author);
     }
 }

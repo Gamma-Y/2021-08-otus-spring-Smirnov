@@ -3,9 +3,9 @@ package ru.otus.library.database.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import ru.otus.library.services.Formatter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.StringJoiner;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book implements Formatter {
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -25,19 +25,22 @@ public class Book implements Formatter {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @ToString.Exclude
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
     private List<Comment> comments = new ArrayList<>();
 
+    @ToString.Exclude
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Author.class, fetch = FetchType.EAGER)
     @JoinTable(name = "books_authors",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors = new ArrayList<>();
 
+    @ToString.Exclude
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.EAGER)
     @JoinTable(name = "books_generis",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
@@ -64,30 +67,5 @@ public class Book implements Formatter {
     public void removeComment(Comment comment){
         comments.remove(comment);
         comment.setBook(null);
-    }
-
-    @Override
-    public String getFullInfo() {
-        StringJoiner joiner = new StringJoiner(" ");
-        joiner.add(name);
-        joiner.add("\n Автор:");
-        for (Author author : authors) {
-            joiner.add(author.getShortInfo() + ";");
-        }
-        joiner.add("\n Жанр:");
-        for (Genre genre : generis) {
-            joiner.add(genre.getShortInfo() + ";");
-        }
-        joiner.add("\n Комментарии:\n\t");
-        for (Comment comment : comments) {
-            joiner.add(comment.getShortInfo() + ";");
-            joiner.add("\n\t");
-        }
-        return joiner.toString();
-    }
-
-    @Override
-    public String getShortInfo() {
-       return name;
     }
 }

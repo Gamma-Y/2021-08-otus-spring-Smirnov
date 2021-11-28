@@ -11,11 +11,11 @@ public interface AuthorRepository {
 
     Optional<Author> findById(long id);
 
-    List<Author> findById(List<Long> id);
+    List<Author> findByIds(List<Long> id);
 
     List<Author> findAll();
 
-    void updateNameById(long id, String name);
+    void update(Author updatedAuthor);
 
-    void deleteById(long id);
+    void delete(Author author);
 }

@@ -55,13 +55,11 @@ public class CommentRepositoryJPATest {
     @DisplayName("должен удалить комментарий")
     @Test
     public void shouldRemoveComment() {
-        Book book = em.find(Book.class, 1l);
-        Comment comment = new Comment(COMMENT_TEXT, COMMENT_TIME, book);
-        comment = em.persist(comment);
-        repository.deleteById(comment.getId());
-        em.flush();
-        List<Comment> actual = em.getEntityManager().createQuery("select c from Comment c", Comment.class).getResultList();
-        assertThat(actual).isNotNull().hasSize(EXPECTED_NUMBER_OF_COMMENTS);
+        Comment comment = new Comment(COMMENT_TEXT, COMMENT_TIME, null);
+        comment = em.persistAndFlush(comment);
+        repository.delete(comment);
+        Comment actual = em.find(Comment.class, comment.getId());
+        assertThat(actual).isEqualTo(null);
     }
 
 }

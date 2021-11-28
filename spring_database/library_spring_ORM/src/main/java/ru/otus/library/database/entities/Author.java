@@ -2,7 +2,7 @@ package ru.otus.library.database.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.otus.library.services.Formatter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,13 +12,15 @@ import java.util.List;
 @Table(name = "authors")
 @Entity
 @NoArgsConstructor
-public class Author implements Formatter {
+
+public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
@@ -34,15 +36,6 @@ public class Author implements Formatter {
     public void removeBook(Book b) {
         this.books.remove(b);
         b.getAuthors().remove(this);
-    }
-    @Override
-    public String getFullInfo() {
-        return toString();
-    }
-
-    @Override
-    public String getShortInfo() {
-        return fullName;
     }
 
 }

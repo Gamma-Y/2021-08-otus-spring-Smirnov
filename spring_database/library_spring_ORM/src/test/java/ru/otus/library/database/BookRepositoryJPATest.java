@@ -8,9 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.library.database.entities.Author;
 import ru.otus.library.database.entities.Book;
-import ru.otus.library.database.entities.Comment;
 import ru.otus.library.database.entities.Genre;
-import ru.otus.library.database.repositories.BookRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -60,10 +58,11 @@ public class BookRepositoryJPATest {
     @DisplayName("должен удалить книгу")
     @Test
     public void shouldRemoveBook() {
-        repository.deleteById(1l);
-        em.flush();
-        List<Book> actual = em.getEntityManager().createQuery("select b from Book b", Book.class).getResultList();
-        assertThat(actual).isNotNull().hasSize(0);
+        Book book = new Book(BOOK_TITLE, null, null);
+        book = em.persistAndFlush(book);
+        repository.delete(book);
+        Book actual = em.find(Book.class, book.getId());
+        assertThat(actual).isEqualTo(null);
     }
 
 }

@@ -38,7 +38,7 @@ public class GenreRepositoryJPA implements GenreRepository {
     }
 
     @Override
-    public List<Genre> findById(List<Long> id)  {
+    public List<Genre> findByIds(List<Long> id)  {
         Query query = em.createQuery("select g from Genre g where g.id in (:ids)");
         query.setParameter("ids", id);
         return query.getResultList();
@@ -51,21 +51,13 @@ public class GenreRepositoryJPA implements GenreRepository {
     }
 
     @Override
-    public void updateNameById(long id, String title) {
-            Query query = em.createQuery("update Genre g " +
-                    "set g.title = :title " +
-                    "where id=:id");
-            query.setParameter("title", title);
-            query.setParameter("id", id);
-            query.executeUpdate();
+    public void update(Genre updatedGenre) {
+        this.save(updatedGenre);
     }
 
+
     @Override
-    public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from Genre g " +
-                "where g.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void delete(Genre genre) {
+        em.remove(genre);
     }
 }
