@@ -6,6 +6,7 @@
     <modules>
         <module>spring_database/library_spring_JDBC</module>
         <module>spring_database/library_spring_ORM</module>
+        <module>spring_database/library_spring_data_JPA</module>
     </modules>
 
     <parent>
