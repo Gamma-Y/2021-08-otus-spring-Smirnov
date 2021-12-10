@@ -7,6 +7,7 @@ import org.springframework.shell.standard.ShellMethod;
 import ru.otus.library.database.entities.Author;
 import ru.otus.library.database.entities.Book;
 import ru.otus.library.database.repositories.AuthorRepository;
+import ru.otus.library.database.repositories.BookRepository;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AuthorService {
     private final AuthorRepository repository;
+    private final BookRepository bookRepository;
 
     @ShellMethod(key = "authors", value = "get all authors")
     public List<Author>  getAll() {
@@ -28,15 +30,10 @@ public class AuthorService {
         return  author;
     }
 
-//    @ShellMethod(key = "author book", value = "get all books by author id")
-//    public  void getAuthorBooksById(long id) {
-//        Author author = repository.findById(id).get();
-//        List<Book> books = author.getBooks();
-//        System.out.println(author);
-//        for(Book b :books){
-//            System.out.println(b);
-//        }
-//    }
+    @ShellMethod(key = "author book", value = "get all books by author id")
+    public  List<Book> getAuthorBooksById(ObjectId id) {
+        return bookRepository.findByAuthors(id);
+    }
 
     @ShellMethod(key = "delete author", value = "delete author by id")
     public String deleteById(ObjectId id) {

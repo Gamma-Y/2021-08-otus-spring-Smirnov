@@ -25,9 +25,9 @@ public class Migrate {
 
     @Execution
     public void addData(SequenceService sequence, BookRepository bookRepository, AuthorRepository authorRepository) {
-        Author author1 = authorRepository.save(new Author("Кэтти Сьерра"));
-        Author author2 = authorRepository.save(new Author("Роберт Мартин Сесил"));
-        Author author3 = authorRepository.save(new Author("Клейсон Джорж Самюэль"));
+        Author author1 = authorRepository.insert(new Author("Кэтти Сьерра"));
+        Author author2 = authorRepository.insert(new Author("Роберт Мартин Сесил"));
+        Author author3 = authorRepository.insert(new Author("Клейсон Джорж Самюэль"));
 
         Comment comment1 = new Comment(sequence.generateSequence(Comment.SEQUENCE_NAME), "comment1", System.currentTimeMillis());
         Comment comment2 = new Comment(sequence.generateSequence(Comment.SEQUENCE_NAME), "comment1", System.currentTimeMillis());
@@ -48,8 +48,6 @@ public class Migrate {
                 List.of("Финансы"),
                 List.of(comment4, comment5, comment6),
                 List.of(author1, author3)));
-
-        authorRepository.insert(List.of(author1, author2, author3));
     }
 
     @RollbackExecution
