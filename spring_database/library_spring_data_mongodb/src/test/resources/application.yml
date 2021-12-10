@@ -1,0 +1,11 @@
+spring:
+  data:
+    mongodb:
+      database: libraryTest
+
+logging:
+  level:
+    ROOT: info
+
+mongock:
+  enabled: false

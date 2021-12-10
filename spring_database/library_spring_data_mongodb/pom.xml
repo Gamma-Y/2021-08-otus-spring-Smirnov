@@ -57,6 +57,13 @@
             <scope>provided</scope>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>de.flapdoodle.embed</groupId>-->
+<!--            <artifactId>de.flapdoodle.embed.mongo</artifactId>-->
+<!--&lt;!&ndash;            <version>3.2.2</version>&ndash;&gt;-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+
 
     </dependencies>
 
