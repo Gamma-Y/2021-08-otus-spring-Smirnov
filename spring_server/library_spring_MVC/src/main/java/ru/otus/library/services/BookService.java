@@ -32,10 +32,9 @@ public class BookService {
         return book;
     }
 
-    public String deleteById(long id) {
+    public void deleteById(long id) {
         Book book = repository.findById(id).get();
         repository.delete(book);
-        return book + " deleted";
     }
 
     public Book update(String name, long id) {
@@ -45,12 +44,11 @@ public class BookService {
         return book;
     }
 
-    public String save(String name, Long[] generisId, Long[] authorsId) {
+    public void save(String name, Long[] generisId, Long[] authorsId) {
         List<Genre> generis = genreRepository.findAllById(List.of(generisId));
         List<Author> authors = authorRepository.findAllById(List.of(authorsId));
         Book book = new Book(name, authors, generis);
         repository.save(book);
-        return "OK";
     }
 
     public void deleteGenreFromBook(long bookId, long genreId) {

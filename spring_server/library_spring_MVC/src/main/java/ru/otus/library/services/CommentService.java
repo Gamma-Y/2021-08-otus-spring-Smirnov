@@ -25,17 +25,16 @@ public class CommentService {
         return comment;
     }
 
-    public String deleteById(long id) {
+    public void deleteById(long id) {
         Comment comment = repository.findById(id).get();
         repository.delete(comment);
-        return comment + " deleted";
     }
 
-    public String update(String text, long id) {
+    public Comment update(String text, long id) {
         Comment comment = repository.findById(id).get();
         comment.setText(text);
         repository.save(comment);
-        return comment + " update";
+        return comment;
     }
 
     public void save(String text, long bookId) {

@@ -29,27 +29,25 @@ public class AuthorService {
         return author.getBooks();
     }
 
-    public String deleteById(long id) {
+    public void deleteById(long id) {
         Author author = repository.findById(id).get();
         repository.delete(author);
-        return author + " deleted";
     }
 
-    public String update(String name, long id) {
+    public Author update(String name, long id) {
         Author author = repository.findById(id).get();
         author.setFullName(name);
         repository.save(author);
-        return author + " update";
+        return author;
     }
 
-    public String update(Author author) {
+    public Author update(Author author) {
         repository.save(author);
-        return author + " update";
+        return author;
     }
 
-    public String save(String name) {
+    public void save(String name) {
         repository.save(new Author(name));
-        return "OK";
     }
 
 }

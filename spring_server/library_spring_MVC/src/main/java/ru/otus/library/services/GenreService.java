@@ -33,21 +33,19 @@ public class GenreService {
         repository.delete(genre);
     }
 
-    public String update(String title, long id) {
+    public Genre update(String title, long id) {
         Genre genre = repository.findById(id).get();
         genre.setTitle(title);
         repository.save(genre);
-        return genre + " update";
+        return genre;
     }
 
-    public String update(Genre genre) {
+    public void update(Genre genre) {
         repository.save(genre);
-        return genre + " update";
     }
 
-    public String save(String title) {
+    public void save(String title) {
         repository.save(new Genre(title));
-        return "OK";
     }
 
 
