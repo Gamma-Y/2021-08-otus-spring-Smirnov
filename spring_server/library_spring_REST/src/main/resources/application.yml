@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+    initialization-mode: always
+  h2:
+    console.enabled: true
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+
+logging:
+  level:
+    ROOT: info
