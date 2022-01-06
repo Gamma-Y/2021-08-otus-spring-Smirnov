@@ -27,132 +27,243 @@
         }
 
 
-
-
-
-
-
-
-
-
-
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 
-<form id="edit-form" th:action="@{/edit/book(id=${book.id})}" th:method="post" action="edit.html">
-    <span><a th:href="@{/}">< Book list</a></span>
-    <h1>Book Info:</h1>
 
-    <div class="row">
-        <label for="id-input">ID:</label>
-        <input id="id-input" type="text" readonly="readonly" th:value="${book.id}" value="1"/>
+<h1>Book Info:</h1>
+
+<div class="row">
+    <label for="bookId">ID:</label>
+    <input id="bookId" type="text" readonly="readonly" th:value="${book.id}" value="1"/>
+</div>
+
+<div class="row">
+    <label for="book-name">Book name:</label>
+    <input id="book-name" name="name" type="text" th:value="${book.name}" value="Programming"/>
+</div>
+
+<div th:object="${book}">
+    <div>
+        <table class="authors">
+            <thead>
+            <h1>Authors</h1>
+            <select id="author_select">
+                <option value=""> --</option>
+                <option th:each="author : ${authors}"
+                        th:value="${author.id}"
+                        th:text="${author.fullName}"></option>
+            </select>
+            <tr>
+                <th>ID</th>
+                <th>Full name</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="authors">
+            <tr th:each="author : *{authors}">
+                <td th:text="${author.id}"/>
+                </td>
+                <td th:text="${author.fullName}"></td>
+                <td>
+                    <input onclick='deleteAuthor(this)' type="button" value="Remove"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
-    <div class="row">
-        <label for="holder-input">Book name:</label>
-        <input id="holder-input" name="name" type="text" th:value="${book.name}" value="Programming"/>
+    <div>
+        <table class="genres">
+            <thead>
+            <h1>Generis</h1>
+            <select id="genre_select">
+                <option value=""> --</option>
+                <option th:each="genre : ${generis}" th:value="${genre.id}" th:text="${genre.title}"></option>
+            </select>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="genres">
+            <tr th:each="genre : *{generis}">
+                <td th:text="${genre.id}"/>
+                </td>
+                <td th:text="${genre.title}"></td>
+                <td>
+                    <input onclick='deleteGenre(this)' type="button" value="Remove"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
-    <div th:object="${book}">
-        <div>
-            <table class="authors">
-                <thead>
-                <h1>Authors</h1>
-                <select name="newAuthor">
-                    <option value=""> --</option>
-                    <option th:each="author : ${authors}"
-                            th:value="${author.id}"
-                            th:text="${author.fullName}"></option>
-                </select>
-                <tr>
-                    <th>ID</th>
-                    <th>Full name</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="author : *{authors}">
-                    <td th:text="${author.id}"/>
-                    </td>
-                    <td th:text="${author.fullName}"></td>
-                    <td>
-                        <a th:href="@{/delete/book/author(bookId=${book.id},authorId=${author.id})}">
-                            <input type="button" value="Remove"/>
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div>
-            <table class="genres">
-                <thead>
-                <h1>Generis</h1>
-                <select name="newGenre">
-                    <option value=""> --</option>
-                    <option th:each="genre : ${generis}" th:value="${genre.id}" th:text="${genre.title}"></option>
-                </select>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="genre : *{generis}">
-                    <td th:text="${genre.id}"/>
-                    </td>
-                    <td th:text="${genre.title}"></td>
-                    <td>
-                        <a th:href="@{/delete/book/genre(bookId=${book.id},genreId=${genre.id})}">
-                            <input type="button" value="Remove"/>
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div>
-            <table class="comments">
-                <thead>
-                <h1>Comments</h1>
-                <tr>
-                    <th>ID</th>
-                    <th>Date time</th>
-                    <th>Text</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="comment : *{comments}">
-                    <td th:text="${comment.id}"/>
-                    <td th:text="${#dates.format(new java.util.Date(comment.dateTime), 'dd/MM/yyyy - HH:mm')}"/>
-                    </td>
-                    <td th:text="${comment.text}"></td>
-                    <td>
-                        <a th:href="@{/delete/book/comment(bookId=${book.id},commentId=${comment.id})}">
-                            <input type="button" value="Remove"/>
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="row">
-                <label for="comment">Add Comment:</label>
-                <input id="comment" name="comment" type="text"/>
-            </div>
+    <div>
+        <table class="comments">
+            <thead>
+            <h1>Comments</h1>
+            <tr>
+                <th>ID</th>
+                <th>Date time</th>
+                <th>Text</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="comments">
+            <tr th:each="comment : *{comments}">
+                <td th:text="${comment.id}"/>
+                <td th:text="${#dates.format(new java.util.Date(comment.dateTime), 'dd/MM/yyyy - HH:mm')}"/>
+                </td>
+                <td th:text="${comment.text}"></td>
+                <td>
+                    <input onclick='deleteComment(this)' type="button" value="Remove"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <label for="comment">Add Comment:</label>
+            <input id="comment" name="comment" type="text"/>
         </div>
     </div>
+</div>
 
 
-    <div class="row">
-        <button type="submit">Save</button>
-    </div>
-</form>
+<!--    <div class="row">-->
+<!--        <button type="submit">Save</button>-->
+<!--    </div>-->
 
 
+<script>
+$(document).ready(function(){
+    host = "http://"+$(location).attr('host');
+});
+
+function deleteAuthor(e) {
+   var bookId = $("#bookId").val();
+   var el = $(e).parent().parent();
+   var id = $(el).children()[0].textContent;
+   $.ajax({
+        url:host+"/delete/book/author",
+        method: "POST",
+        data:{'bookId':bookId, 'authorId':id},
+        success: function(r){
+            if(r) $(el).remove()
+        }
+   })
+};
+function deleteGenre(e) {
+   var bookId = $("#bookId").val();
+   var el = $(e).parent().parent();
+   var id = $(el).children()[0].textContent;
+   $.ajax({
+        url:host+"/delete/book/genre",
+        method: "POST",
+        data:{'bookId':bookId, 'genreId':id},
+        success: function(r){
+            if(r) $(el).remove()
+        }
+   })
+};
+function deleteComment(e) {
+   var el = $(e).parent().parent();
+   var id = $(el).children()[0].textContent;
+   $.ajax({
+        url:host+"/delete/book/comment",
+        method: "POST",
+        data:{'commentId':id},
+        success: function(r){
+            if(r) $(el).remove()
+        }
+   })
+};
+
+$("#comment").keypress(function(event) {
+    if (event.key === "Enter") {
+        var el = $(this);
+        if(el.val()!=""){
+        var bookId = $("#bookId").val();
+            $.ajax({
+                url:host+"/add/book/comment",
+                method: "POST",
+                data:{'bookId':bookId, 'text':el.val(), 'timeStamp':$.now()},
+                success: function(c){
+                    el.val("");
+                    var comments = $("#comments");
+                    var dt = new Date(c.timeStamp);
+                    var row = "<tr>"+
+                        "<td>" + c.id + "</td>" +
+                        "<td>" + dt.getDay()+'/'+dt.getMonth()+1 +'/'+dt.getFullYear() + ' - ' + dt.getHours()+':'+dt.getMinutes()+ "</td>" +
+                        "<td>" + c.text +"</td>" +
+                        "<td>" + "<input onclick='deleteComment(this)' type='button' value='Remove'/>" +"</td>" +
+                        "</tr>";
+                    comments.append(row);
+                }
+            })
+        }
+    }
+});
+
+$("#book-name").keypress(function(event) {
+    if (event.key === "Enter") {
+        var el = $(this);
+        var bookId = $("#bookId").val();
+         $.ajax({
+            url:host+"/update/book",
+            method: "POST",
+            data:{'id':bookId, 'name':el.val()},
+            success: function(c){
+                el.val(c.name);
+            }
+         });
+    }
+
+});
+
+$('#author_select').change(function() {
+    var el = $(this);
+    var bookId = $("#bookId").val();
+    $.ajax({
+            url:host+"/add/book/author",
+            method: "POST",
+            data:{'bookId':bookId, 'id':el.val()},
+            success: function(a){
+                el.val('');
+                var authors = $("#authors");
+                var row = "<tr>"+
+                    "<td>" + a.id + "</td>" +
+                    "<td>" + a.fullName +"</td>" +
+                    "<td>" + "<input onclick='deleteAuthor(this)' type='button' value='Remove'/>" +"</td>" +
+                    "</tr>";
+                authors.append(row);
+            }
+         });
+});
+
+$('#genre_select').change(function() {
+    var el = $(this);
+    var bookId = $("#bookId").val();
+    $.ajax({
+            url:host+"/add/book/genre",
+            method: "POST",
+            data:{'bookId':bookId, 'id':el.val()},
+            success: function(g){
+                el.val('');
+                var genres = $("#genres");
+                var row = "<tr>"+
+                    "<td>" + g.id + "</td>" +
+                    "<td>" + g.title +"</td>" +
+                    "<td>" + "<input onclick='deleteGenre(this)' type='button' value='Remove'/>" +"</td>" +
+                    "</tr>";
+                genres.append(row);
+            }
+         });
+});
+
+</script>
 </body>
 </html>

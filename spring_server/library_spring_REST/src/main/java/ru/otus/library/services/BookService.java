@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.otus.library.controllers.dto.BookDTO;
 import ru.otus.library.database.entities.Author;
 import ru.otus.library.database.entities.Book;
-import ru.otus.library.database.entities.Comment;
 import ru.otus.library.database.entities.Genre;
 import ru.otus.library.database.repositories.AuthorRepository;
 import ru.otus.library.database.repositories.BookRepository;
@@ -14,7 +13,6 @@ import ru.otus.library.database.repositories.GenreRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -63,7 +61,7 @@ public class BookService {
         repository.save(book);
     }
 
-    public void deleteGenreFromBook(long bookId, long genreId) {
+    public boolean deleteGenreFromBook(long bookId, long genreId) {
         Book book = repository.getById(bookId);
         List<Genre> genres = book.getGeneris();
         for (Genre genre : genres) {
@@ -73,9 +71,10 @@ public class BookService {
             }
         }
         repository.save(book);
+        return true;
     }
 
-    public void deleteAuthorFromBook(long bookId, long authorId) {
+    public boolean deleteAuthorFromBook(long bookId, long authorId) {
         Book book = repository.getById(bookId);
         List<Author> authors = book.getAuthors();
         for (Author author : authors) {
@@ -85,24 +84,13 @@ public class BookService {
             }
         }
         repository.save(book);
+        return true;
     }
 
-    public void updateByAttributeMap(Map<String, String> attribute) {
-        Book book = repository.getById(Long.parseLong(attribute.get("id")));
-        book.setName(attribute.get("name"));
-        if (!attribute.get("newAuthor").isBlank()) {
-            Author author = authorRepository.getById(Long.parseLong(attribute.get("newAuthor")));
-            if (!book.getAuthors().contains(author)) book.getAuthors().add(author);
-        }
-        if (!attribute.get("newGenre").isBlank()) {
-            Genre genre = genreRepository.getById(Long.parseLong(attribute.get("newGenre")));
-            if (!book.getGeneris().contains(genre)) book.getGeneris().add(genre);
-        }
-        if (!attribute.get("comment").isBlank()) {
-            book.addComment(new Comment(attribute.get("comment"), System.currentTimeMillis(), book));
-        }
-
-        repository.save(book);
+    public BookDTO updateBook(BookDTO bookDTO) {
+        Book book = repository.getById(bookDTO.getId());
+        book.setName(bookDTO.getName());
+        return convertBookToDTO(repository.save(book));
     }
 
 

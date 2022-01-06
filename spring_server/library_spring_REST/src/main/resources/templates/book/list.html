@@ -40,9 +40,9 @@
 <script>
 $(document).ready(function(){
 
-    host = $(location).attr('host');
+    host = "http://"+$(location).attr('host');
 $.ajax({
-    url:"http://"+host+"/books",
+    url:host+"/books",
     method: "GET",
     success: function(r){
          for(var i = 0; i < r.length;i++){
@@ -51,7 +51,7 @@ $.ajax({
                     createCell(r[i].name) +
                     createCellSpan(r[i].authors) +
                     createCellSpan(r[i].genres) +
-                    createCellButtom() +
+                    createCellButtom(r[i].id) +
                     "</tr>"
              $(".books>tbody").append(newRow);
          }
@@ -72,9 +72,10 @@ function createCellSpan(texts){
     return str+"</td>"
 }
 
-function createCellButtom(){
+function createCellButtom(id){
     var buttoms = "<td>" +
-                    "<input class='edit' type='button' value='Edit'/>" +
+                    "<a href= "+host+"/edit/book?id=" + id +
+                    "><input type='button' value='Edit'/></a>" +
                     "<input onclick='deleteBook(this)' type='button' value='Delete'/>" +
                     "</td>"
     return buttoms;
