@@ -51,11 +51,6 @@ public class BookController {
         return commentService.save(commentDTO);
     }
 
-    @PostMapping("/update/book")
-    public BookDTO updateBook(@ModelAttribute BookDTO bookDTO) {
-        return service.updateBook(bookDTO);
-    }
-
     @PostMapping("/add/book/author")
     public AuthorDTO addAuthorToBook(@ModelAttribute AuthorDTO authorDTO) {
         return authorService.addBookToAuthor(authorDTO);
@@ -66,5 +61,8 @@ public class BookController {
         return genreService.addGenreToBook(genreDTO);
     }
 
-
+    @PostMapping("/update/book")
+    public BookDTO updateBook(@ModelAttribute BookDTO bookDTO) {
+        return service.updateBook(bookDTO);
+    }
 }
