@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all books</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .books, .books td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+
+
+
+
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<h1>Books</h1>
+<table class="books">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Authors</th>
+        <th>Genres</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function(){
+
+    host = "http://"+$(location).attr('host');
+$.ajax({
+    url:host+"/books",
+    method: "GET",
+    success: function(r){
+         for(var i = 0; i < r.length;i++){
+            var newRow = "<tr>"+
+                    createCell(r[i].id) +
+                    createCell(r[i].name) +
+                    createCellSpan(r[i].authors) +
+                    createCellSpan(r[i].genres) +
+                    createCellButtom(r[i].id) +
+                    "</tr>"
+             $(".books>tbody").append(newRow);
+         }
+     }
+
+})
+
+function createCell(text){
+    return "<td>" + text + "</td>"
+}
+
+
+function createCellSpan(texts){
+    var str = "<td>";
+    for(var i =0; i < texts.length;i++){
+        str += "<span>" + texts[i] + "; " + "</span>"
+    }
+    return str+"</td>"
+}
+
+function createCellButtom(id){
+    var buttoms = "<td>" +
+                    "<a href= "+host+"/edit/book?id=" + id +
+                    "><input type='button' value='Edit'/></a>" +
+                    "<input onclick='deleteBook(this)' type='button' value='Delete'/>" +
+                    "</td>"
+    return buttoms;
+}
+
+});
+
+
+function deleteBook(e) {
+   var el = $(e).parent().parent();
+   var id = $(el).children()[0].textContent;
+   $.ajax({
+        url:"http://"+host+"/delete/book",
+        method: "POST",
+        data:{'id':id},
+        success: function(r){
+            if(r) $(el).remove()
+        }
+   })
+};
+
+
+</script>
+</body>
+</html>
