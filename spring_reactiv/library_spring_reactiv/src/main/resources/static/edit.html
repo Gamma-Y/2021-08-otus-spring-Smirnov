@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Book info</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        table, table td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+
+
+
+
+
+
+
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+
+
+<h1>Book Info:</h1>
+
+<div class="row">
+    <label for="bookId">ID:</label>
+    <select id="bookId">
+        <option value="" type="text" readonly="readonly"> --</option>
+    </select>
+
+</div>
+
+<div class="row">
+    <label for="book_name">Book name:</label>
+    <input id="book_name" type="text"
+           width="300px"
+    />
+</div>
+
+<div>
+    <div>
+        <table class="authors">
+            <thead>
+            <h1>Authors</h1>
+
+            <tr>
+                <th>Full name</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="authors_info">
+            </tbody>
+        </table>
+        <div class="row">
+            <label for="add_author">Add Author:</label>
+            <input id="add_author" type="text"/>
+        </div>
+    </div>
+
+    <div>
+        <table class="genres">
+            <thead>
+            <h1>Generis</h1>
+
+            <tr>
+                <th>Title</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="genres_info">
+            </tbody>
+        </table>
+        <div class="row">
+            <label for="add_genre">Add Genre:</label>
+            <input id="add_genre" type="text"/>
+        </div>
+    </div>
+
+    <div>
+        <table class="comments">
+            <thead>
+            <h1>Comments</h1>
+            <tr>
+                <th>Date time</th>
+                <th>Text</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="comments_info">
+            </tbody>
+        </table>
+        <div class="row">
+            <label for="add_comment">Add Comment:</label>
+            <input id="add_comment" name="comment" type="text"/>
+        </div>
+    </div>
+</div>
+
+
+<!--    <div class="row">-->
+<!--        <button type="submit">Save</button>-->
+<!--    </div>-->
+
+
+<script>
+$(document).ready(function(){
+    host = "http://"+$(location).attr('host');
+$.ajax({
+    url:host+"/books/title",
+    method: "GET",
+    success: function(r){
+         var keys = Object.keys(r);
+         for(var i = 0; i < keys.length;i++){
+           $("#bookId").append(new Option(keys[i], keys[i]))
+         }
+    }
+})
+
+});
+
+$('#bookId').change(function() {
+    var id = $(this).val();
+    $.ajax({
+        url:host+"/book/"+id,
+        method: "GEt",
+        success: function(r){
+            $("#book_name").val(r.name);
+           addAuthors(r.authors);
+           addGenres(r.generis);
+           addComments(r.comments);
+           $(".commentId").hide();
+        }
+   })
+});
+
+function addAuthors(authors){
+    $("#authors_info tr").remove();
+    var table = $("#authors_info");
+    for(var i = 0; i < authors.length; i++){
+        table.append(
+            '<tr> <td>' + authors[i].fullName +
+            '</td><td>' + "<input onclick='deleteAuthor(this)' type='button' value='Remove'/>" +
+            '</td></tr>'
+        );
+    }
+}
+
+function addGenres(genres){
+    $("#genres_info tr").remove();
+    var table = $("#genres_info");
+    for(var i = 0; i < genres.length; i++){
+        table.append(
+            '<tr> <td>' + genres[i] +
+            '</td><td>' + "<input onclick='deleteGenre(this)' type='button' value='Remove'/>" +
+            '</td></tr>'
+        );
+    }
+}
+
+function addComments(comments){
+    $("#comments_info tr").remove();
+    var table = $("#comments_info");
+    for(var i = 0; i < comments.length; i++){
+        table.append(
+            "<tr><td class='commentId'>" + comments[i].dateTime +
+            '</td><td>' + new Date(comments[i].dateTime).toLocaleDateString() + ":"+ new Date(comments[i].dateTime).toLocaleTimeString() +
+            '</td><td>' + comments[i].text +
+            '</td><td>' + "<input onclick='deleteComment(this)' type='button' value='Remove'/>" +
+            '</td></tr>'
+        );
+    }
+
+};
+
+
+$("#book_name").keypress(function(event) {
+    if (event.key === "Enter") {
+        var el = $(this);
+        var bookId = $("#bookId").val();
+         $.ajax({
+            url:host+"/update/book",
+            method: "POST",
+            data:{'bookId':bookId, 'name':el.val()},
+            success: function(c){
+                el.val(c.name);
+            }
+         });
+    }
+
+});
+
+$("#add_genre").keypress(function(event) {
+    if (event.key === "Enter") {
+        var el = $(this);
+        if(el.val()!=""){
+        var bookId = $("#bookId").val();
+            $.ajax({
+                url:host+"/book/add/genre",
+                method: "POST",
+                data:{'bookId':bookId, 'title':el.val()},
+                success: function(b){
+                    el.val("");
+                    addGenres(b.generis);
+                }
+            })
+        }
+    }
+});
+
+$("#add_author").keypress(function(event) {
+    if (event.key === "Enter") {
+        var el = $(this);
+        if(el.val()!=""){
+        var bookId = $("#bookId").val();
+            $.ajax({
+                url:host+"/book/add/author",
+                method: "POST",
+                data:{'bookId':bookId, 'author':el.val()},
+                success: function(b){
+                    el.val("");
+                    addAuthors(b.authors);
+                }
+            })
+        }
+    }
+});
+
+$("#add_comment").keypress(function(event) {
+    if (event.key === "Enter") {
+        var el = $(this);
+        if(el.val()!=""){
+        var bookId = $("#bookId").val();
+            $.ajax({
+                url:host+"/book/add/comment",
+                method: "POST",
+                data:{'bookId':bookId, 'text':el.val(), 'timestamp':$.now()},
+                success: function(b){
+                    el.val("");
+                    addComments(b.comments);
+                    $(".commentId").hide();
+                }
+            })
+        }
+    }
+});
+
+function deleteAuthor(e) {
+   var bookId = $("#bookId").val();
+   var el = $(e).parent().parent();
+   var fullName = $(el).children()[0].textContent;
+   $.ajax({
+        url:host+"/author/delete",
+        method: "POST",
+        data:{'bookId':bookId, 'author':fullName},
+        success: function(b){
+            addAuthors(b.authors);
+        }
+   })
+};
+
+
+function deleteGenre(e) {
+   var bookId = $("#bookId").val();
+   var el = $(e).parent().parent();
+   var title = $(el).children()[0].textContent;
+   $.ajax({
+        url:host+"/genre/delete",
+        method: "POST",
+        data:{'bookId':bookId, 'title':title},
+        success: function(b){
+             addGenres(b.generis);
+        }
+   })
+};
+function deleteComment(e) {
+    var bookId = $("#bookId").val();
+   var el = $(e).parent().parent();
+   var timestamp = $(el).children()[0].textContent;
+   var text = $(el).children()[2].textContent;
+   $.ajax({
+        url:host+"/comment/delete",
+        method: "POST",
+        data:{'bookId':bookId, 'text':text, 'timestamp':timestamp},
+        success: function(b){
+            addComments(b.comments);
+            $(".commentId").hide();
+        }
+   })
+};
+
+
+
+</script>
+</body>
+</html>
