@@ -1,4 +1,4 @@
-package ru.otus.library.endpoints.DTO;
+package ru.otus.library.controllers.dto;
 
 import lombok.Data;
 

@@ -3,14 +3,14 @@ package ru.otus.library.controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import ru.otus.library.controllers.dto.AuthorDTO;
+import ru.otus.library.controllers.dto.BookDTO;
+import ru.otus.library.controllers.dto.CommentDTO;
+import ru.otus.library.controllers.dto.GenreDTO;
 import ru.otus.library.database.entities.Author;
 import ru.otus.library.database.entities.Book;
 import ru.otus.library.database.entities.Comment;
 import ru.otus.library.database.repositories.BookRepository;
-import ru.otus.library.endpoints.DTO.AuthorDTO;
-import ru.otus.library.endpoints.DTO.BookDTO;
-import ru.otus.library.endpoints.DTO.CommentDTO;
-import ru.otus.library.endpoints.DTO.GenreDTO;
 
 @RestController
 @AllArgsConstructor
@@ -23,7 +23,7 @@ public class BookController {
         return Mono.just(true);
     }
 
-    @PostMapping(value = "/book/add/genre")
+    @PostMapping("/book/add/genre")
     public Mono<Book> addGenreToBook(@ModelAttribute Mono<GenreDTO> newGenre) {
         return repository.findById(newGenre.map(GenreDTO::getBookId))
                 .log()
@@ -36,9 +36,7 @@ public class BookController {
     @PostMapping(value = "/book/add/author")
     public Mono<Book> addAuthorToBook(@ModelAttribute Mono<AuthorDTO> newAuthor) {
         return repository.findById(newAuthor.map(AuthorDTO::getBookId))
-                .log()
                 .doOnNext(book -> book.getAuthors().add(new Author(newAuthor.block().getAuthor())))
-                .log()
                 .flatMap(repository::save);
 
     }
