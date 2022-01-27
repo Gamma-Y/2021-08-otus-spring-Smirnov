@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe()
                 .key("testKey")
-                .tokenValiditySeconds(10)
+                .tokenValiditySeconds(24*60*60)
                 .and()
                 .logout()
         ;

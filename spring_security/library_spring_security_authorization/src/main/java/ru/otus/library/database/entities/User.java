@@ -20,10 +20,13 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "login")
     private String login;
+
     @Column(name = "password")
     private String password;
+
     @ToString.Exclude
     @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)

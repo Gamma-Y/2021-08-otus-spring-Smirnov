@@ -16,8 +16,10 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "role")
     private String role;
+
     @ToString.Exclude
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
