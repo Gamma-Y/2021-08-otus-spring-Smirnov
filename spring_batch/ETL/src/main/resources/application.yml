@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      database: library
+
+mongock:
+#  runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.etl.database.mongo.migration
+
+logging:
+  level:
+    ROOT: info
