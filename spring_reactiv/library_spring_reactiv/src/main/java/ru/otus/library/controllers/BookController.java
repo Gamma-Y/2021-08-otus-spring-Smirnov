@@ -23,73 +23,72 @@ public class BookController {
         return Mono.just(true);
     }
 
+
     @PostMapping("/book/add/genre")
-    public Mono<Book> addGenreToBook(@ModelAttribute Mono<GenreDTO> newGenre) {
-        return repository.findById(newGenre.map(GenreDTO::getBookId))
-                .log()
-                .doOnNext(book -> book.getGeneris().add(newGenre.block().getTitle()))
-                .log()
-                .flatMap(repository::save);
+    public Mono<Book> addGenreToBook(@RequestBody GenreDTO newGenre) {
+        Mono<Book> book = repository.findById(newGenre.getBookId());
+        book.map(b -> b.getGeneris().add(newGenre.getTitle()));
+        return repository.save(book.block());
 
     }
 
     @PostMapping(value = "/book/add/author")
-    public Mono<Book> addAuthorToBook(@ModelAttribute Mono<AuthorDTO> newAuthor) {
-        return repository.findById(newAuthor.map(AuthorDTO::getBookId))
-                .doOnNext(book -> book.getAuthors().add(new Author(newAuthor.block().getAuthor())))
-                .flatMap(repository::save);
+    public Mono<Book> addAuthorToBook(@RequestBody AuthorDTO newAuthor) {
+        Mono<Book> book = repository.findById(newAuthor.getBookId());
+        book.map(b -> b.getAuthors().add(new Author(newAuthor.getAuthor())));
+        return repository.save(book.block());
 
     }
 
     @PostMapping(value = "/book/add/comment")
-    public Mono<Book> addCommentToBook(@ModelAttribute Mono<CommentDTO> newComment) {
-        CommentDTO commentDTO = newComment.block();
-        return repository.findById(newComment.map(CommentDTO::getBookId))
-                .log()
-                .doOnNext(book -> book.getComments().add(new Comment(commentDTO.getTimestamp(), commentDTO.getText())))
-                .log()
-                .flatMap(repository::save);
+    public Mono<Book> addCommentToBook(@RequestBody CommentDTO newComment) {
+        Mono<Book> book = repository.findById(newComment.getBookId());
+        book.map(b -> b.getComments().add(new Comment(newComment.getTimestamp(), newComment.getText())));
+        return repository.save(book.block());
 
     }
 
     @PostMapping(value = "/update/book")
-    public Mono<Book> updateBookName(@ModelAttribute Mono<BookDTO> updateBook) {
-        return repository.findById(updateBook.map(BookDTO::getBookId))
-                .log()
-                .doOnNext(book -> book.setName(updateBook.map(BookDTO::getName).block()))
-                .log()
-                .flatMap(repository::save);
+    public Mono<Book> updateBookName(@RequestBody BookDTO updateBook) {
+        Mono<Book> book = repository.findById(updateBook.getBookId());
+        book.map(b -> {
+            b.setName(updateBook.getName());
+            return b;
+        });
+        return repository.save(book.block());
 
     }
 
     @PostMapping(value = "/author/delete")
-    public Mono<Book> deleteAuthorFromBook(@ModelAttribute Mono<AuthorDTO> deleteAuthor) {
-        return repository.findById(deleteAuthor.map(AuthorDTO::getBookId))
-                .log()
-                .doOnNext(book -> book.getAuthors().remove(new Author(deleteAuthor.block().getAuthor())))
-                .log()
-                .flatMap(repository::save);
+    public Mono<Book> deleteAuthorFromBook(@RequestBody AuthorDTO deleteAuthor) {
+        Mono<Book> book = repository.findById(deleteAuthor.getBookId());
+        book.map(b -> {
+            b.getAuthors().remove(new Author(deleteAuthor.getAuthor()));
+            return b;
+        });
+        return repository.save(book.block());
 
     }
 
     @PostMapping(value = "/genre/delete")
-    public Mono<Book> deleteGenreFromBook(@ModelAttribute Mono<GenreDTO> deleteGenre) {
-        return repository.findById(deleteGenre.map(GenreDTO::getBookId))
-                .log()
-                .doOnNext(book -> book.getGeneris().remove(deleteGenre.block().getTitle()))
-                .log()
-                .flatMap(repository::save);
+    public Mono<Book> deleteGenreFromBook(@RequestBody GenreDTO deleteGenre) {
+        Mono<Book> book = repository.findById(deleteGenre.getBookId());
+        book.map(b -> {
+            b.getGeneris().remove(deleteGenre.getTitle());
+            return b;
+        });
+        return repository.save(book.block());
 
     }
 
     @PostMapping(value = "/comment/delete")
-    public Mono<Book> deleteCommentFromBook(@ModelAttribute Mono<CommentDTO> deleteComment) {
-        CommentDTO commentDTO = deleteComment.block();
-        return repository.findById(commentDTO.getBookId())
-                .log()
-                .doOnNext(book -> book.getComments().remove(new Comment(commentDTO.getTimestamp(), commentDTO.getText())))
-                .log()
-                .flatMap(repository::save);
+    public Mono<Book> deleteCommentFromBook(@RequestBody CommentDTO deleteComment) {
+        Mono<Book> book = repository.findById(deleteComment.getBookId());
+        book.map(b -> {
+            b.getComments().remove(new Comment(deleteComment.getTimestamp(), deleteComment.getText()));
+            return b;
+        });
+        return repository.save(book.block());
 
     }
 }
