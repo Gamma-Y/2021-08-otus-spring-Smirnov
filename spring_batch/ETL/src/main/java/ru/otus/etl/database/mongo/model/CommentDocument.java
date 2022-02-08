@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Transient;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class CommentDocument {
     @Transient
     public static final String SEQUENCE_NAME = "comment_sequence";
     @Id
