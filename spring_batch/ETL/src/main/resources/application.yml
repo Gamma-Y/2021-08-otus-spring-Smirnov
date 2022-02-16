@@ -1,0 +1,27 @@
+spring:
+  data:
+    mongodb:
+      database: library
+  datasource:
+    url: jdbc:h2:mem:test
+    initialization-mode: always
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+
+mongock:
+  #  runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.etl.database.mongo.migration
+
+logging:
+  level:
+    ROOT: info
