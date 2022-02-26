@@ -1,20 +1,3 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-  health:
-    defaults:
-      enabled: true
-  info:
-    git:
-      mode: full
-
-
-
 spring:
   datasource:
     url: jdbc:h2:mem:test
@@ -28,6 +11,18 @@ spring:
       ddl-auto: none
 
     show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, logfile, metrics, prometheus
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
 
 logging:
   pattern:
