@@ -16,7 +16,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, logfile, metrics, prometheus
+#        include: health, logfile, metrics, prometheus
+        include: "*"
+    jmx:
+      exposure:
+        include: "*"
   endpoint:
     health:
       show-details: always
