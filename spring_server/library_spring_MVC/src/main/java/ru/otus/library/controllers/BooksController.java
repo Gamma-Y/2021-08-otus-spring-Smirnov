@@ -65,4 +65,5 @@ public class BooksController {
         service.deleteAuthorFromBook(bookId, authorId);
         return "redirect:/edit/book?id=" + bookId;
     }
+
 }

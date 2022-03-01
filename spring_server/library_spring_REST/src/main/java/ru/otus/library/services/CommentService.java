@@ -1,5 +1,7 @@
 package ru.otus.library.services;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.library.controllers.dto.CommentDTO;
@@ -26,6 +28,12 @@ public class CommentService {
         return comment;
     }
 
+    @HystrixCommand(fallbackMethod = "returnStatus", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000"),
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
+    })
     public boolean deleteById(long id) {
         Comment comment = repository.findById(id).get();
         repository.delete(comment);
@@ -44,6 +52,12 @@ public class CommentService {
         repository.save(new Comment(text, System.currentTimeMillis()));
     }
 
+    @HystrixCommand(fallbackMethod = "buildFallbackComment", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000"),
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000")
+    })
     public CommentDTO save(CommentDTO commentDTO) {
         Book book = bookRepository.findById(commentDTO.getBookId()).get();
         return commentToDto(repository.save(new Comment(commentDTO.getText(), commentDTO.getTimeStamp(), book)));
@@ -55,5 +69,24 @@ public class CommentService {
         commentDTO.setText(comment.getText());
         commentDTO.setTimeStamp(comment.getDateTime());
         return commentDTO;
+    }
+
+    public CommentDTO buildFallbackComment() {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setBookId(-1);
+        commentDTO.setText("N/A");
+        commentDTO.setId(-1);
+        commentDTO.setTimeStamp(-1);
+
+        return commentDTO;
+    }
+
+    public CommentDTO buildFallbackComment(CommentDTO oldCommentDTO) {
+        CommentDTO commentDTO = buildFallbackComment();
+        return commentDTO;
+    }
+
+    public boolean returnStatus(long... id) {
+        return false;
     }
 }
