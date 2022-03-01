@@ -1,3 +1,4 @@
+debug: false
 spring:
   datasource:
     url: jdbc:h2:mem:test
@@ -15,3 +16,20 @@ spring:
 logging:
   level:
     ROOT: info
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    jmx:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+
+
